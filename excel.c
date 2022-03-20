@@ -4,6 +4,8 @@
 
 int excelRead(char* name);
 
+
+
 int main(int argc, char* argv[])
 {
 
@@ -13,7 +15,9 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-
+//[FunctionName] excelRead
+//[DESC] 엑셀 파일을 읽어서 그대로 출력
+//[TODO] 파일을 전부 말고 분할로 읽기, 출력이 아닌 파일로 데이터 저장 또는 다른 곳에 넘기도록 작성
 int excelRead(char* name){
     FILE *fp = fopen(name,"r");
     char* buffer;
