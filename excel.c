@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
 
     if(excelRead(argv[1]) == 1){
-        printf("엑셀 파일 열기 에러");
+        printf("엑셀 파일 열기 에러\n");
     }
 
     return 0;
@@ -19,8 +19,7 @@ int excelRead(char* name){
     char* buffer;
     int size;
         
-    if(fp == NULL){ // 파일 읽가 실패 하면 예외처리
-        printf("exel: cannot open file\n");
+    if(fp == NULL){ // 파일 읽가 실패 하면 예외처리     
         return 1;
     }
 
