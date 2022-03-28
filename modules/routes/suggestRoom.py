@@ -1,6 +1,10 @@
-#방 추천 요청 처리
 from flask import request
 from flask_restx import Resource, Namespace
+
+#[Function] 추천 요청
+#[DESC] 클라이언트로 받은 추천 요청 처리
+#[TODO] 기능 작성
+
 
 suggestRoom = Namespace('suggestRoom')
 
