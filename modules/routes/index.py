@@ -1,5 +1,5 @@
 from flask import request
-from flask_restx import Resource, Api, Namespace
+from flask_restx import Resource, Namespace
 
 
 
