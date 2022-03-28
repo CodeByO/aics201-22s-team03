@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv(verbose=True)
 
+#[Function] Open API 데이터 호출
+#[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
+#[TODO] 인자 세팅
+
 class getData:
     
     def __init__(self):

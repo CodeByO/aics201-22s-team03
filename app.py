@@ -5,26 +5,29 @@ import sys
 
 from dotenv import load_dotenv
 from flask import Flask
-from flask_restx import Api
 
-from modules.routes import *
-from modules.api import *
+from modules.routes import index
+from modules.routes import area
+from modules.routes import deposit
+from modules.routes import monthly
+from modules.routes import searchRoom
+from modules.routes import suggestRoom
 
 
 app = Flask(__name__)
-api = Api(app)
 
-api.add_namespace(index,'/')
+app.register_blueprint(index.blueprint)
 
-api.add_namespace(area,'/area')
+app.register_blueprint(area.blueprint)
 
-api.add_namespace(deposit,'/deposit')
+app.register_blueprint(deposit.blueprint)
 
-api.add_namespace(monthly,'/monthly')
+app.register_blueprint(monthly.blueprint)
 
-api.add_namespace(searchRoom,'/searchRoom')
+app.register_blueprint(searchRoom.blueprint)
 
-api.add_namespace(suggestRoom,'/suggestRoom')
+app.register_blueprint(suggestRoom.blueprint)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=8080)

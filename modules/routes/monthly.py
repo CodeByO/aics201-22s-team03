@@ -1,28 +1,23 @@
-from flask import flash
-from flask_restx import Resource, Namespace
+from flask import flash, Blueprint, render_template
 
 #[Function] 월세 요청
 #[DESC] 클라이언트로 받은 월세 정렬 요청 처리
 #[TODO] 현재까지 기능 테스트 및 팀원이 작성한 기능 추가
 
 
-monthly = Namespace('monthly')
+blueprint = Blueprint("monthly", __name__, url_prefix='/monthly')
 
-@monthly.route('')
-class monthly(Resource):
-    def post(self):
+
+@blueprint.route('/<int:sortId>')
+def monthly(sortId):
+    print(sortId)
+    if sortId == 1:
         pass
-
-@monthly.route('/<int:sortId>')
-class sortMonthly(Resource):
-    def post(self,sortId):
-        if sortId == 1:
-            pass
-        elif sortId == 2:
-            pass
-        elif sortId == 3:
-            pass
-        else:
-            flash("해당 요청은 존재하지 않습니다.")
+    elif sortId == 2:
+        pass
+    elif sortId == 3:
+        pass
+    else:
+        return render_template('index.html')
 
 
