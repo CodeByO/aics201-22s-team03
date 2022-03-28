@@ -1,6 +1,6 @@
 #월세 요청 처리
 
-from flask import request
+from flask import flash
 from flask_restx import Resource, Namespace
 
 monthly = Namespace('monthly')
@@ -11,19 +11,15 @@ class monthly(Resource):
         pass
 
 @monthly.route('/<int:sortId>')
-class SortArea(Resource):
+class sortMonthly(Resource):
     def post(self,sortId):
-        pass
+        if sortId == 1:
+            pass
+        elif sortId == 2:
+            pass
+        elif sortId == 3:
+            pass
+        else:
+            flash("해당 요청은 존재하지 않습니다.")
 
 
-# @monthly.route('/monthlyQuick',methods=['POST'])
-# def monthlyQuick():
-#     pass
-
-# @monthly.route('/monthlyMerge',methods=['POST'])
-# def monthlyMerge():
-#     pass
-
-# @monthly.route('/monthlyInsert',methods=['POST'])
-# def monthlyInsert():
-#     pass

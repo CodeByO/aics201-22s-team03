@@ -1,6 +1,6 @@
 #보증금 요청 처리
 
-from flask import request
+from flask import flash
 from flask_restx import Resource, Namespace
 
 deposit = Namespace('deposit')
@@ -11,18 +11,14 @@ class deposit(Resource):
         pass
 
 @deposit.route('/<int:sortId>')
-class SortArea(Resource):
+class sortDeposit(Resource):
     def post(self,sortId):
-        pass
+        if sortId == 1:
+            pass
+        elif sortId == 2:
+            pass
+        elif sortId == 3:
+            pass
+        else:
+            flash("해당 요청은 존재하지 않습니다.")
 
-# @deposit.route('/depositQuick',methods=['POST'])
-# def depositQuick():
-#     pass
-
-# @deposit.route('/depositMerge',methods=['POST'])
-# def depositMerge():
-#     pass
-
-# @deposit.route('/depositInsert',methods=['POST'])
-# def depositInsert():
-#     pass
