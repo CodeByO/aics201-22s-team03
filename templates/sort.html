@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Team03</title>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+    <title>KCTFjr Shopping</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main_page.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -12,34 +12,14 @@
 
 </head>
 <body>
-
-
-    <header>
-        <div class="nav">
-            <h1>다가구 주택 전/월세 조회</h1>
-            <div>
-        </div>
-        <ul class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-        </div>
-    </header>
-    
-    <main>
-
-<div>
-            <table border="0" class="table" style="float:center" >
-        <tr>
-            <td>몬스터</td>
-            <td>포카리스웨트</td>
-            <td>크림빵</td>
-            <td>삼다수</td>
-            <td>삼각김밥</td>
-            <td>FLAG</td>
-        </tr>
-    
-    </main>
+{% if list %}
+    <ul>
+    {% for Contact in list %}
+        <li><a href="/board/article/{{ Contact.id }}/">{{Contact.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>게시글이 없습니다.</p>
+{% endif %}
 </body>
 </html>
