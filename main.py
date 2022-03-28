@@ -1,10 +1,14 @@
 from crypt import methods
 import os
 import requests
+import sys
+
 
 from dotenv import load_dotenv
 from flask import *
+from flask_restx import Resource, Api
 
+from modules.routes import index
 
 load_dotenv(verbose=True)
 
@@ -17,10 +21,10 @@ response = requests.get(url,params=params)
 
 
 app = Flask(__name__)
+api = Api(app)
 
-@app.route('/',methods=['GET'])
-def index():
-    return render_template('index.html')
+api.add_namespace(index,'/')
+
 
 
 @app.route('/suggestRoom',methods=['POST'])
@@ -69,3 +73,7 @@ def areaMerge():
 @app.route('/areaInsert',methods=['POST'])
 def areaInsert():
     pass
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0', port=8080)
