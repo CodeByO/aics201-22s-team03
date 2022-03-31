@@ -9,7 +9,7 @@ load_dotenv(verbose=True)
 
 #[Function] Open API 데이터 호출
 #[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
-#[TODO] 딕셔너리 -> 리스트 화
+#[TODO] 연립주택 API 요청 추가
 
 class getData:
     
