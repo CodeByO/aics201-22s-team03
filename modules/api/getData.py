@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import xmltodict
 from datetime import datetime
+import csv
 
 load_dotenv(verbose=True)
 
@@ -42,7 +43,6 @@ class getData:
             print("------------------------------------")
             return None
         item = items['item']
-        print(item[0]["건축년도"])
         
         # test = item['지역코드']['법정동']['계약면적']['월세금액']['보증금액']['건축년도']
         data = []
@@ -50,7 +50,7 @@ class getData:
         for i in range(len(item)):
             tmp = []
             
-            tmp.append(item[i]['지역코드'])
+            tmp.append(self.findLocal(item[i]['지역코드']))
             tmp.append(item[i]['법정동'])
             tmp.append(item[i]['계약면적'])
             tmp.append(item[i]['월세금액'])
@@ -58,5 +58,14 @@ class getData:
             tmp.append(item[i].get('건축년도','0000'))
             
             data.append(tmp)
-        
+
         return data
+    def findLocal(self,target):
+        with open('./regionCode.csv','r',encoding='UTF8') as file:
+    
+            reader = csv.reader(file)
+            match = [s for s in reader if target in s] 
+            if match == []:
+                return None
+                
+        return match[0][0]
