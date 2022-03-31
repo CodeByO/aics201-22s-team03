@@ -17,7 +17,6 @@ class getData:
         api_key = os.getenv('API_KEY')
         self.api_key = requests.utils.unquote(api_key)
         self.url = os.getenv('API_URL')
-        self.date = datetime.today().strftime("%Y%m")
     
     def getApi(self,date):
         params = {'serviceKey': self.api_key, 'LAWD_CD' : '36110','DEAL_YMD':date}
@@ -42,9 +41,10 @@ class getData:
             print("해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
-        item = items['item']
+
+        return self.dictToList(items['item'])
         
-        # test = item['지역코드']['법정동']['계약면적']['월세금액']['보증금액']['건축년도']
+    def dictToList(self,item):
         data = []
         tmp = []
         for i in range(len(item)):
@@ -60,6 +60,7 @@ class getData:
             data.append(tmp)
 
         return data
+
     def findLocal(self,target):
         with open('./regionCode.csv','r',encoding='UTF8') as file:
     
