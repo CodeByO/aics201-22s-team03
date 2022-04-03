@@ -2,7 +2,6 @@ import requests
 import os
 from dotenv import load_dotenv
 import xmltodict
-from datetime import datetime
 import csv
 
 load_dotenv(verbose=True)
@@ -62,7 +61,7 @@ class getData:
         return data
 
     def findLocal(self,target):
-        with open('./regionCode.csv','r',encoding='UTF8') as file:
+        with open('../../regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
@@ -70,3 +69,19 @@ class getData:
                 return None
                 
         return match[0][0]
+
+
+    def devideRoom(self,date):
+        roomList = self.getApi(date)
+        monthly = []
+        
+        charter = []
+
+        for i in roomList:
+            if i[3] == '0':
+                charter.append(i)
+            else:
+                monthly.append(i)
+
+        return monthly, charter
+
