@@ -18,6 +18,7 @@ def monthly(sortId):
     elif sortId == 3:
         pass
     else:
-        return render_template('index.html')
+        flash("해당 요청은 존재하지 않습니다.")
+    return render_template('sort.html')
 
 

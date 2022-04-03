@@ -10,8 +10,8 @@ from modules.routes import index
 from modules.routes import area
 from modules.routes import deposit
 from modules.routes import monthly
-from modules.routes import searchRoom
-from modules.routes import suggestRoom
+from modules.routes import search
+from modules.routes import suggest
 
 
 app = Flask(__name__)
@@ -24,9 +24,9 @@ app.register_blueprint(deposit.blueprint)
 
 app.register_blueprint(monthly.blueprint)
 
-app.register_blueprint(searchRoom.blueprint)
+app.register_blueprint(search.blueprint)
 
-app.register_blueprint(suggestRoom.blueprint)
+app.register_blueprint(suggest.blueprint)
 
 
 if __name__ == "__main__":

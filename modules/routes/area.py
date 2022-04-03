@@ -17,3 +17,4 @@ def area(sortId):
         pass
     else:
         flash("해당 요청은 존재하지 않습니다.")
+    return render_template('sort.html')

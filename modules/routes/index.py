@@ -12,10 +12,10 @@ blueprint = Blueprint("index", __name__, url_prefix='/')
 
 data = getData.getData()
 
-print (data.getApi())
+
 
 @blueprint.route('/')
 def index():
-
-    return render_template('index.html')
+    roomList = data.getApi('202203')
+    return render_template('index.html',roomList=roomList)
             
