@@ -72,6 +72,7 @@ class getData:
 
 
     def devideRoom(self,date):
+        
         roomList = self.getApi(date)
         monthly = []
         
