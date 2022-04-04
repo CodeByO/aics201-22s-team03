@@ -3,6 +3,9 @@ import os
 from dotenv import load_dotenv
 import xmltodict
 import csv
+from datetime import datetime
+
+nowDate = datetime.today().strftime("%Y%m")
 
 load_dotenv(verbose=True)
 
@@ -17,7 +20,7 @@ class getData:
         self.api_key = requests.utils.unquote(api_key)
         self.url = os.getenv('API_URL')
     
-    def getApi(self,date):
+    def getApi(self,date=nowDate):
         params = {'serviceKey': self.api_key, 'LAWD_CD' : '36110','DEAL_YMD':date}
         response = requests.get(self.url,params=params).content
         
@@ -61,7 +64,7 @@ class getData:
         return data
 
     def findLocal(self,target):
-        with open('../../regionCode.csv','r',encoding='UTF-8') as file:
+        with open('./regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
@@ -71,7 +74,7 @@ class getData:
         return match[0][0]
 
 
-    def devideRoom(self,date):
+    def devideRoom(self,date=nowDate):
         
         roomList = self.getApi(date)
         monthly = []
