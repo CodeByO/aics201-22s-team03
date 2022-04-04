@@ -1,4 +1,4 @@
-from flask import flash, Blueprint, render_template
+from flask import Blueprint, render_template
 
 #[Function] 검색 요청
 #[DESC] 클라이언트로 받은 검색 요청 처리

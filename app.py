@@ -1,9 +1,3 @@
-import os
-import requests
-import sys
-
-
-from dotenv import load_dotenv
 from flask import Flask
 
 from modules.routes import index
