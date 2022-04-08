@@ -11,7 +11,22 @@ from api import suggest
 
 
 blueprint = Blueprint("suggest", __name__, url_prefix='/suggest')
+sug = suggest.suggest()
+monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
 
-@blueprint.route('/')
-def suggest():
+print(monthlyList)
+print(mCharterList)
+
+@blueprint.route('/charter')
+def suggestCharter():
+        charterList,charterTime = sug.suggestCharter()
+        print(charterList)
+        return render_template('suggest.html')
+
+@blueprint.route('/monthly')
+def suggestMonthly():
+        
+        monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
+        print(monthlyList)
+        print(mCharterList)
         return render_template('suggest.html')
