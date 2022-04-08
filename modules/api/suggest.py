@@ -1,30 +1,37 @@
-from getData import getData
+from multiprocessing.pool import ThreadPool
+from api import getData
 import time
 
 
 
 #[Function] 자료구조를 이용한 추천 기능
 #[DESC] 힙을 이용하여 월세 또는 전세의 최저값인 데이터 리턴
-#[TODO] 기능 작성
+#[TODO] routes/suggests로 호출될시 suggestMontly에 월세 전세 힙정렬 에러 수정
 
 class suggest:
     def __init__(self):
         self.start = time.time()
-        data = getData()
+        data = getData.getData()
         self.monthly, self.charter = data.devideRoom('202201')
         self.input = 0
         self.endPoint = 0
-        self.heap = [['0']*5 for _ in range(1000001)]
+        self.heap = [[0]*5 for _ in range(1000001)]
         
     
     def suggestMonthly(self):
-        monthly = self.minHeap(self.monthly,3)
-        charter = self.minHeap(self.monthly,4)
+        poolMonthly = ThreadPool(processes=1)
+        poolCharter = ThreadPool(processes=2)
+        asyncMonthly = poolMonthly.apply_async(self.minHeap,(self.monthly,3))
+        asyncCharter = poolCharter.apply_async(self.minHeap,(self.monthly,4))
+        monthly = asyncMonthly.get()
+        charter = asyncCharter.get()
         end = time.time() - self.start
         return monthly, charter, end
+
     def suggestCharter(self):
-        
-        charter = self.minHeap(self.charter,4)
+        poolCharter = ThreadPool(processes=3)
+        asyncCharter = poolCharter.apply_async(self.minHeap,(self.charter,4))
+        charter = asyncCharter.get()
         end = time.time() - self.start
         return charter, round(end, 3)
 
@@ -34,7 +41,8 @@ class suggest:
         cur = self.endPoint
 
         while cur > 0:
-            if int(self.heap[cur // 2][index]) > int(input[index]) :
+
+            if int(self.heap[cur // 2][index]) > int(input[index]):
 
                 self.heap[cur] = self.heap[cur // 2]
                 cur = cur // 2
@@ -84,8 +92,10 @@ class suggest:
             else:
                 return self.heap[i]
 
-if __name__ == "__main__":
-    test = suggest()
-    monthly, charter, end = test.suggestMonthly()
-    print(monthly)
-    print(charter)
+# if __name__ == '__main__':
+#     sug = suggest()
+#     charterList,charterTime = sug.suggestCharter()
+#     print(charterList)
+#     monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
+#     print(monthlyList)
+#     print(mCharterList)

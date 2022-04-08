@@ -11,7 +11,7 @@ load_dotenv(verbose=True)
 
 #[Function] Open API 데이터 호출
 #[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
-#[TODO] 연립주택 API 요청 추가
+#[TODO] 요청 받은 데이터를 재가공해서 파일로 저장
 
 class getData:
     
@@ -60,11 +60,15 @@ class getData:
             tmp.append(item[i].get('건축년도','0000'))
             
             data.append(tmp)
+        #api 요청 한것을 파일로 저장
+        with open('roomList.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
 
         return data
 
     def findLocal(self,target):
-        with open('./regionCode.csv','r',encoding='UTF-8') as file:
+        with open('../../regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
