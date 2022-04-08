@@ -1,5 +1,3 @@
-from asyncio.proactor_events import _ProactorBasePipeTransport
-from calendar import month
 from getData import getData
 import time
 
@@ -25,9 +23,9 @@ class suggest:
 
     def suggestCharter(self):
         
-        self.minHeap(self.charter,4)
+        charter = self.minHeap(self.charter,4)
         end = time.time() - self.start
-        return self.heap, round(end, 3)
+        return charter, round(end, 3)
 
     def insertHeap(self, input,index):
         self.endPoint += 1
@@ -82,12 +80,13 @@ class suggest:
         for i in range(len(self.heap)):
             
             if self.heap[i][index] == 0:
-                print(self.heap[i+1])
-                break
+                return self.heap[i+1]
             else:
-                print(self.heap[i])
-                break
+                return self.heap[i]
 
 if __name__ == "__main__":
     test = suggest()
-    test.suggestCharter()
+    charter, end = test.suggestCharter()
+
+    print(charter)
+    print(end)
