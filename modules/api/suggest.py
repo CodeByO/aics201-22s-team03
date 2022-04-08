@@ -25,17 +25,17 @@ class suggest:
 
     def suggestCharter(self):
         
-        self.minHeap(self.charter)
+        self.minHeap(self.charter,4)
         end = time.time() - self.start
         return self.heap, round(end, 3)
 
-    def insertHeap(self, input):
+    def insertHeap(self, input,index):
         self.endPoint += 1
 
         cur = self.endPoint
 
         while cur > 0:
-            if int(self.heap[cur // 2][4]) > int(input[4]) :
+            if int(self.heap[cur // 2][index]) > int(input[index]) :
 
                 self.heap[cur] = self.heap[cur // 2]
                 cur = cur // 2
@@ -43,7 +43,7 @@ class suggest:
                 break
         self.heap.insert(cur,input)
         
-    def popHeap(self):
+    def popHeap(self,index):
 
         if self.endPoint == 0:
             print("0")
@@ -60,7 +60,7 @@ class suggest:
             return None
         
         while root * 2 + 1 < 1000001 and value > self.heap[root*2] or value > self.heap[root* 2 + 1]:
-            if self.heap[root * 2][4] > self.heap[root * 2 + 1][4]:
+            if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
 
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
@@ -71,17 +71,17 @@ class suggest:
         
 
         self.heap[root] = value
-    def minHeap(self,list):
+    def minHeap(self,list,index):
         for list in self.charter:
-            if(list[4] == '0'):
-                self.popHeap()
+            if(list[index] == '0'):
+                self.popHeap(index)
             else:
 
-                list[4] = list[4].replace(',','')
-                self.insertHeap(list)
+                list[index] = list[index].replace(',','')
+                self.insertHeap(list,index)
         for i in range(len(self.heap)):
             
-            if self.heap[i][4] == 0:
+            if self.heap[i][index] == 0:
                 print(self.heap[i+1])
                 break
             else:
