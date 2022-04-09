@@ -8,32 +8,12 @@ import time
 #[DESC] 힙을 이용하여 월세 또는 전세의 최저값인 데이터 리턴
 #[TODO] routes/suggests로 호출될시 suggestMontly에 월세 전세 힙정렬 에러 수정
 
-class suggest:
+class heap:
     def __init__(self):
-        self.start = time.time()
-        data = getData.getData()
-        self.monthly, self.charter = data.devideRoom('202201')
         self.input = 0
         self.endPoint = 0
         self.heap = [[0]*5 for _ in range(1000001)]
         
-    
-    def suggestMonthly(self):
-        poolMonthly = ThreadPool(processes=1)
-        poolCharter = ThreadPool(processes=2)
-        asyncMonthly = poolMonthly.apply_async(self.minHeap,(self.monthly,3))
-        asyncCharter = poolCharter.apply_async(self.minHeap,(self.monthly,4))
-        monthly = asyncMonthly.get()
-        charter = asyncCharter.get()
-        end = time.time() - self.start
-        return monthly, charter, end
-
-    def suggestCharter(self):
-        poolCharter = ThreadPool(processes=3)
-        asyncCharter = poolCharter.apply_async(self.minHeap,(self.charter,4))
-        charter = asyncCharter.get()
-        end = time.time() - self.start
-        return charter, round(end, 3)
 
     def insertHeap(self, input,index):
         self.endPoint += 1
@@ -55,7 +35,6 @@ class suggest:
         if self.endPoint == 0:
             return None
         root = 1
-        returnValue = self.heap[root]
         value = self.heap[self.endPoint]
 
         self.heap[self.endPoint] = 0
@@ -92,10 +71,35 @@ class suggest:
             else:
                 return self.heap[i]
 
+
+class suggest():
+    def __init__(self):
+        self.start = time.time()
+        data = getData.getData()
+        self.monthly, self.charter = data.devideRoom('202203')
+
+    def suggestMonthly(self):
+        monthlyHeap = heap()
+        charterHeap = heap()
+        monthly = monthlyHeap.minHeap(self.monthly,3)
+        charter = charterHeap.minHeap(self.monthly,4)
+        end = time.time() - self.start
+        return monthly, charter, end
+
+    def suggestCharter(self):
+        minHeap = heap()
+        # poolCharter = ThreadPool(processes=3)
+        # asyncCharter = poolCharter.apply_async(minHeap.minHeap,(self.charter,4))
+        # charter = asyncCharter.get()
+        charter = minHeap.minHeap(self.charter,4)
+        end = time.time() - self.start
+        return charter, round(end, 3)
+
 # if __name__ == '__main__':
 #     sug = suggest()
-#     charterList,charterTime = sug.suggestCharter()
-#     print(charterList)
 #     monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
 #     print(monthlyList)
 #     print(mCharterList)
+
+#     charterList,charterTime = sug.suggestCharter()
+#     print(charterList)
