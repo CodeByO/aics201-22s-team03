@@ -56,7 +56,12 @@ class getData:
             tmp.append(item[i]['법정동'])
             tmp.append(item[i]['계약면적'])
             tmp.append(item[i]['월세금액'])
-            tmp.append(item[i]['보증금액'])
+
+            # if type(item[i]['보증금액']) is str:
+            #     tmp.append(item[i]['보증금액'].replace(",",""))
+            # else:
+            #     tmp.append(item[i]['보증금액'])
+            tmp.append(item[i]['보증금액'].replace(",",""))
             tmp.append(item[i].get('건축년도','0000'))
             
             data.append(tmp)
@@ -93,3 +98,8 @@ class getData:
 
         return monthly, charter
 
+if __name__ == '__main__':
+    test = getData()
+    data = test.getApi()
+    print(data)
+    os.remove('roomList.csv')
