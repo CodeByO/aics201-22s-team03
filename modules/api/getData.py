@@ -43,8 +43,7 @@ class getData:
             print("해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
-
-        return self.dictToList(items['item'])
+        self.dictToList(items['item'])
         
     def dictToList(self,item):
         data = []
@@ -66,11 +65,11 @@ class getData:
             
             data.append(tmp)
         #api 요청 한것을 파일로 저장
-        with open('roomList.csv', 'w', newline='') as f:
+        with open('../api/roomList.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(data)
 
-        return data
+        
 
     def findLocal(self,target):
         with open('../../regionCode.csv','r',encoding='UTF-8') as file:
@@ -84,22 +83,24 @@ class getData:
 
 
     def devideRoom(self,date=nowDate):
-        
-        roomList = self.getApi(date)
-        monthly = []
-        
-        charter = []
+        self.getApi(date)
+        with open('../api/roomList.csv','r',encoding='UTF-8') as file:
 
-        for i in roomList:
-            if i[3] == '0':
-                charter.append(i)
-            else:
-                monthly.append(i)
+            roomList = csv.reader(file)
+            monthly = []
+            
+            charter = []
 
+            for i in roomList:
+                if i[3] == '0':
+                    charter.append(i)
+                else:
+                    monthly.append(i)
         return monthly, charter
-
-if __name__ == '__main__':
-    test = getData()
-    data = test.getApi()
-    print(data)
-    os.remove('roomList.csv')
+    def __del__(self):
+        os.remove('../api/roomList.csv')
+# if __name__ == '__main__':
+#     test = getData()
+#     data = test.getApi()
+#     print(data)
+#     os.remove('roomList.csv')
