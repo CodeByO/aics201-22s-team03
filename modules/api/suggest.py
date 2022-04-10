@@ -9,10 +9,11 @@ import time
 #[TODO] routes/suggests로 호출될시 suggestMontly에 월세 전세 힙정렬 에러 수정
 
 class heap:
+
     def __init__(self):
         self.input = 0
         self.endPoint = 0
-        self.heap = [[0]*5 for _ in range(1000001)]
+        self.heap = [[0]*5 for _ in range(10001)]
         
 
     def insertHeap(self, input,index):
@@ -43,13 +44,11 @@ class heap:
         if self.endPoint == 0:
             return None
         
-        while root * 2 + 1 < 1000001 and value > self.heap[root*2] or value > self.heap[root* 2 + 1]:
+        while root * 2 + 1 < 10001 and value > self.heap[root*2] or value > self.heap[root* 2 + 1]:
             if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
-
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
             else:
-
                 self.heap[root] = self.heap[root*2]
                 root = root * 2
         
@@ -61,15 +60,13 @@ class heap:
             if(n[index] == '0'):
                 self.popHeap(index)
             else:
-                n[index] = n[index].replace(',','')
                 self.insertHeap(n,index)
 
-        for i in range(len(self.heap)):
+        for i in self.heap:
+            if i[index] != 0:
+                return i
 
-            if self.heap[i][index] == 0:
-                return self.heap[i+1]
-            else:
-                return self.heap[i]
+                
 
 
 class suggest():
