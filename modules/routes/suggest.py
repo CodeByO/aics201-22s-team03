@@ -12,21 +12,16 @@ from api import suggest
 
 blueprint = Blueprint("suggest", __name__, url_prefix='/suggest')
 sug = suggest.suggest()
-monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
-
-print(monthlyList)
-print(mCharterList)
-
+charterList,charterTime = sug.suggestCharter()
+print(charterList)
 @blueprint.route('/charter')
 def suggestCharter():
+        
         charterList,charterTime = sug.suggestCharter()
-        print(charterList)
-        return render_template('suggest.html')
+        return render_template('suggest.html',roomList=charterList,time=charterTime)
 
 @blueprint.route('/monthly')
 def suggestMonthly():
-        
-        monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
-        print(monthlyList)
-        print(mCharterList)
-        return render_template('suggest.html')
+
+        monthlyList,charterList,monthlyTime = sug.suggestMonthly()
+        return render_template('suggest.html',monthlyList=monthlyList,charterList=charterList,time=monthlyTime)
