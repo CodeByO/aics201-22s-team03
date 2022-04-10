@@ -22,7 +22,14 @@ class getData:
     
     def getApi(self,date=nowDate):
         params = {'serviceKey': self.api_key, 'LAWD_CD' : '36110','DEAL_YMD':date}
-        response = requests.get(self.url,params=params).content
+        response = None
+        try:
+            response = requests.get(self.url,params=params).content
+        except requests.exceptions.Timeout as errd:
+            print("타임아웃 에러 : ", errd)
+        except requests.exceptions.ConnectionError as errc:
+            print("연결 에러 : ", errc)
+
         
         xmlData = xmltodict.parse(response)
 
@@ -84,21 +91,26 @@ class getData:
 
     def devideRoom(self,date=nowDate):
         self.getApi(date)
-        with open('../api/roomList.csv','r',encoding='UTF-8') as file:
+        try:
+            with open('../api/roomList.csv','r',encoding='UTF-8') as file:
 
-            roomList = csv.reader(file)
-            monthly = []
+                roomList = csv.reader(file)
+                monthly = []
             
-            charter = []
+                charter = []
 
-            for i in roomList:
-                if i[3] == '0':
-                    charter.append(i)
-                else:
-                    monthly.append(i)
-        return monthly, charter
+                for i in roomList:
+                    if i[3] == '0':
+                        charter.append(i)
+                    else:
+                        monthly.append(i)
+    
+            return monthly, charter
+        except Exception as error:
+            print("파일 처리 에러 발생",error)
     def __del__(self):
         os.remove('../api/roomList.csv')
+    
 # if __name__ == '__main__':
 #     test = getData()
 #     data = test.getApi()
