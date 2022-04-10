@@ -34,8 +34,14 @@ class getData:
         xmlData = xmltodict.parse(response)
 
         header = xmlData['response']['header']
-        items = xmlData['response']['body']['items']
         resultCode = header['resultCode']
+        items = None
+        try:
+            items = xmlData['response']['body']['items']
+        except:
+            pass
+
+
 
         if resultCode != '00':
             resultMsg = header['resultMsg']
@@ -63,10 +69,6 @@ class getData:
             tmp.append(item[i]['계약면적'])
             tmp.append(item[i]['월세금액'])
 
-            # if type(item[i]['보증금액']) is str:
-            #     tmp.append(item[i]['보증금액'].replace(",",""))
-            # else:
-            #     tmp.append(item[i]['보증금액'])
             tmp.append(item[i]['보증금액'].replace(",",""))
             tmp.append(item[i].get('건축년도','0000'))
             
@@ -90,13 +92,13 @@ class getData:
 
 
     def devideRoom(self,date=nowDate):
-        self.getApi(date)
+        self.checkFile(date)
         try:
             with open('../api/roomList.csv','r',encoding='UTF-8') as file:
 
                 roomList = csv.reader(file)
                 monthly = []
-            
+                
                 charter = []
 
                 for i in roomList:
@@ -104,13 +106,22 @@ class getData:
                         charter.append(i)
                     else:
                         monthly.append(i)
-    
+        
             return monthly, charter
         except Exception as error:
             print("파일 처리 에러 발생",error)
-    def __del__(self):
-        os.remove('../api/roomList.csv')
     
+    def checkFile(self,date=nowDate):
+        if os.path.isfile('../api/roomList.csv'):
+            return None
+        else:
+            self.getApi(date)
+
+    def __del__(self):
+        if os.path.isfile('../api/roomList.csv'):
+            os.remove('../api/roomList.csv')
+
+
 # if __name__ == '__main__':
 #     test = getData()
 #     data = test.getApi()
