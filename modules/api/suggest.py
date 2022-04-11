@@ -29,7 +29,7 @@ class heap:
                 cur = cur // 2
             else:
                 break
-        self.heap.insert(cur,input)
+        self.heap[cur] = input
         
     def popHeap(self,index):
 
@@ -66,7 +66,41 @@ class heap:
             if i[index] != 0:
                 return i
 
-                
+# class heapPython:
+#     def heapPush(tree,value):
+#         tree.append(value)
+
+#         node = len(tree) - 1
+
+#         lastIdx = node
+
+#         while node > 1:
+
+#             node //= 2
+
+#             if tree[node] > value:
+#                 tree[lastIdx] = tree[node]
+#                 lastIdx = node
+#             else:
+#                 break
+
+#         tree[lastIdx] = value
+
+#         return
+
+#     def getPriority(tree,node):
+#         if len(tree) -1 > node*2 + 1:
+#             if tree[node*2] > tree[node*2+1]:
+#                 return node*2+1
+
+#             else:
+#                 return node * 2
+
+#         elif len(tree) -1 == node * 2:
+#             return node * 2
+
+#         else:
+#             return -1           
 
 
 class suggest():
