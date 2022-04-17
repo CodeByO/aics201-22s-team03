@@ -16,6 +16,6 @@ data = getData.getData()
 
 @blueprint.route('/')
 def index():
-    roomList = data.getApi('202203')
+    roomList = data.roomList('202203')
     return render_template('index.html',roomList=roomList)
             

@@ -12,8 +12,10 @@ from api import suggest
 
 blueprint = Blueprint("suggest", __name__, url_prefix='/suggest')
 sug = suggest.suggest()
-charterList,charterTime = sug.suggestCharter()
-print(charterList)
+@blueprint.route('/')
+def index():
+        return render_template('suggest.html')
+
 @blueprint.route('/charter')
 def suggestCharter():
         

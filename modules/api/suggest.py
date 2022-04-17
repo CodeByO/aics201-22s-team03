@@ -105,25 +105,26 @@ class heap:
 
 class suggest():
     def __init__(self):
-        self.start = time.time()
         data = getData.getData()
         self.monthly, self.charter = data.devideRoom('202203')
 
     def suggestMonthly(self):
+        start = time.time()
         monthlyHeap = heap()
         charterHeap = heap()
         monthly = monthlyHeap.minHeap(self.monthly,3)
         charter = charterHeap.minHeap(self.monthly,4)
-        end = time.time() - self.start
+        end = time.time() - start
         return monthly, charter, end
 
     def suggestCharter(self):
+        start = time.time()
         minHeap = heap()
         # poolCharter = ThreadPool(processes=3)
         # asyncCharter = poolCharter.apply_async(minHeap.minHeap,(self.charter,4))
         # charter = asyncCharter.get()
         charter = minHeap.minHeap(self.charter,4)
-        end = time.time() - self.start
+        end = time.time() - start
         return charter, round(end, 3)
 
 # if __name__ == '__main__':
