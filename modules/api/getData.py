@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 import xmltodict
 import csv
 from datetime import datetime
-
+from pathlib import Path
 nowDate = datetime.today().strftime("%Y%m")
 
 load_dotenv(verbose=True)
-
+fpath = os.path.dirname(os.path.abspath(__file__))
 #[Function] Open API 데이터 호출
 #[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
 #[TODO] 요청 받은 데이터를 재가공해서 파일로 저장
@@ -74,14 +74,14 @@ class getData:
             
             data.append(tmp)
         #api 요청 한것을 파일로 저장
-        with open('../api/roomList.csv', 'w', newline='') as f:
+        with open(fpath + '/roomList.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(data)
 
         
 
     def findLocal(self,target):
-        with open('../../regionCode.csv','r',encoding='UTF-8') as file:
+        with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
@@ -94,7 +94,7 @@ class getData:
     def devideRoom(self,date=nowDate):
         self.checkFile(date)
         try:
-            with open('../api/roomList.csv','r',encoding='UTF-8') as file:
+            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
 
                 roomList = csv.reader(file)
                 monthly = []
@@ -112,14 +112,27 @@ class getData:
             print("파일 처리 에러 발생",error)
     
     def checkFile(self,date=nowDate):
-        if os.path.isfile('../api/roomList.csv'):
+        if os.path.isfile(fpath + '/roomList.csv'):
             return None
         else:
             self.getApi(date)
 
+    def roomList(self,date=nowDate):
+        self.checkFile(date)
+        try:
+            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+                roomList = []
+                for i in csv.reader(file):
+                    roomList.append(i)
+                return roomList
+        except Exception as error:
+            print("파일 처리 에러 발생",error)
+        
+
     def __del__(self):
-        if os.path.isfile('../api/roomList.csv'):
-            os.remove('../api/roomList.csv')
+
+        if os.path.isfile(fpath + '/roomList.csv'):
+            os.remove(fpath + '/roomList.csv')
 
 
 # if __name__ == '__main__':
