@@ -1,4 +1,4 @@
-from api import getData
+from package import getData
 import time
 
 
