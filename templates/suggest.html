@@ -49,11 +49,12 @@
       </div>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/suggest/monthly">월세</a>
+          <a class="nav-link active" href="/suggest/charter">전세</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/suggest/charter">전세</a>
+          <a class="nav-link" aria-current="page" href="/suggest/monthly">월세</a>
         </li>
+
         {% if time%}
           <div id="time" >작업 시간 : {{time}} 초</div>
         {% endif %}
@@ -73,14 +74,13 @@
         
         
         <tbody>
+          <tr>
               {% for list in roomList%}
-              <tr>
-                {% for contents in list%}
-                    <td>{{contents}}</td>
-                {% endfor%}
-                </tr>
+              
+                <td>{{list}}</td> 
+                
                {% endfor%}
-        
+          </tr>
             </tbody>
         </table>
               {% else %}
