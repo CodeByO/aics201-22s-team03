@@ -30,7 +30,7 @@
             <a class="nav-link" href="/sort">정렬</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/suggest">추천</a>
+            <a class="nav-link" href="/suggest/charter">추천</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/search">검색</a>
@@ -47,6 +47,7 @@
           <h1 class="text-dark display-5 fw-bold">3조 전/월세 조회</h1>
         </div>
       </div>
+      {% if roomList %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" href="/suggest/charter">전세</a>
@@ -54,7 +55,16 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="/suggest/monthly">월세</a>
         </li>
-
+        {% else %}
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link " href="/suggest/charter">전세</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/suggest/monthly">월세</a>
+          </li>
+      {% endif %}
+      
         {% if time%}
           <div id="time" >작업 시간 : {{time}} 초</div>
         {% endif %}
@@ -83,10 +93,33 @@
           </tr>
             </tbody>
         </table>
-              {% else %}
-              <p>데이터가 없습니다.</p>
       {% endif %}
-        
+        {% if monthlyList%}
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">지역</th>
+                <th scope="col">법정동</th>
+                <th scope="col">계약 면적</th>
+                <th scope="col">월세</th>
+                <th scope="col">보증금(전세)</th>
+                <th scope="col">건축년도</th>
+              </tr>
+            </thead>
+            
+            
+            <tbody>
+              {% for list in monthlyList%}
+              <tr>
+                {% for contents in list%}
+                    <td>{{contents}}</td>
+                {% endfor%}
+                </tr>
+               {% endfor%}
+                </tbody>
+            </table>
+
+          {% endif %}
 </main>
 </body>
 </html>
