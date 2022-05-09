@@ -3,12 +3,17 @@ import os
 from dotenv import load_dotenv
 import xmltodict
 import csv
+from datetime import datetime
+
+nowDate = datetime.today().strftime("%Y%m")
 
 load_dotenv(verbose=True)
+fpath = os.path.dirname(os.path.abspath(__file__))
 
 #[Function] Open API 데이터 호출
 #[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
-#[TODO] 연립주택 API 요청 추가
+#[TODO] 요청 받은 데이터를 재가공해서 파일로 저장
+
 
 class getData:
     
@@ -17,15 +22,28 @@ class getData:
         self.api_key = requests.utils.unquote(api_key)
         self.url = os.getenv('API_URL')
     
-    def getApi(self,date):
+    def getApi(self,date=nowDate):
         params = {'serviceKey': self.api_key, 'LAWD_CD' : '36110','DEAL_YMD':date}
-        response = requests.get(self.url,params=params).content
+        response = None
+        try:
+            response = requests.get(self.url,params=params).content
+        except requests.exceptions.Timeout as errd:
+            print("타임아웃 에러 : ", errd)
+        except requests.exceptions.ConnectionError as errc:
+            print("연결 에러 : ", errc)
+    
         
         xmlData = xmltodict.parse(response)
 
         header = xmlData['response']['header']
-        items = xmlData['response']['body']['items']
         resultCode = header['resultCode']
+        items = None
+        try:
+            items = xmlData['response']['body']['items']
+        except:
+            pass
+
+
 
         if resultCode != '00':
             resultMsg = header['resultMsg']
@@ -40,12 +58,11 @@ class getData:
             print("해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
-
-        return self.dictToList(items['item'])
+        self.dictToList(items['item'])
         
     def dictToList(self,item):
         data = []
-        tmp = []
+
         for i in range(len(item)):
             tmp = []
             
@@ -53,15 +70,20 @@ class getData:
             tmp.append(item[i]['법정동'])
             tmp.append(item[i]['계약면적'])
             tmp.append(item[i]['월세금액'])
-            tmp.append(item[i]['보증금액'])
+
+            tmp.append(item[i]['보증금액'].replace(",",""))
             tmp.append(item[i].get('건축년도','0000'))
             
             data.append(tmp)
+        #api 요청 한것을 파일로 저장
+        with open(fpath + '/roomList.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
 
-        return data
+        
 
     def findLocal(self,target):
-        with open('../../regionCode.csv','r',encoding='UTF-8') as file:
+        with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
@@ -71,18 +93,54 @@ class getData:
         return match[0][0]
 
 
-    def devideRoom(self,date):
+    def devideRoom(self,date=nowDate):
+        self.checkFile(date)
+        try:
+            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+
+                roomList = csv.reader(file)
+                monthly = []
+                
+                charter = []
+
+                for i in roomList:
+                    if i[3] == '0':
+                        charter.append(i)
+                    else:
+                        monthly.append(i)
         
-        roomList = self.getApi(date)
-        monthly = []
+            return monthly, charter
+        except Exception as error:
+            print("파일 처리 에러 발생",error)
+    
+    def checkFile(self,date=nowDate):
+        if os.path.isfile(fpath + '/roomList.csv'):
+            return None
+        else:
+            self.getApi(date)
+
+
+
+    def roomList(self,date=nowDate):
+        self.checkFile(date)
+        try:
+            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+                roomList = []
+                for i in csv.reader(file):
+                    roomList.append(i)
+                return roomList
+        except Exception as error:
+            print("파일 처리 에러 발생",error)
         
-        charter = []
 
-        for i in roomList:
-            if i[3] == '0':
-                charter.append(i)
-            else:
-                monthly.append(i)
+    # def __del__(self):
 
-        return monthly, charter
+    #     if os.path.isfile(fpath + '/roomList.csv'):
+    #         os.remove(fpath + '/roomList.csv')
 
+
+# if __name__ == '__main__':
+#     test = getData()
+#     roomList = test.roomList('202203')
+
+#     print(roomList)
