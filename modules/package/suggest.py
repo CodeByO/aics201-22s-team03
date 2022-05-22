@@ -1,5 +1,5 @@
 import queue
-from getData import getData
+from package import getData
 import time
 
 
