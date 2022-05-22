@@ -1,4 +1,3 @@
-
 import requests
 import os
 from dotenv import load_dotenv
@@ -46,15 +45,15 @@ class getData:
 
         if resultCode != '00':
             resultMsg = header['resultMsg']
-            print("API 요청 에러 발생 resultCode : " + resultCode)
+            print("[-]API 요청 에러 발생 resultCode : " + resultCode)
             print("------------------------------------")
-            print(resultMsg)
+            print("[-]"+resultMsg)
             print("------------------------------------")
             return None 
         elif items == None:
-            print("API 요청 에러 발생")
+            print("[-]API 요청 에러 발생")
             print("------------------------------------")
-            print("해당 하는 데이터가 없음")
+            print("[-]해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
         self.dictToList(items['item'],date,locate)
