@@ -33,11 +33,11 @@ def quickSort(data, first, final):
 if __name__ == '__main__':
     data = getData.getData()
     roomList = data.roomList('202203')
-    index = 2
 
     quickSort(roomList, 0, len(roomList)-1)
-    for i in roomList:
-        print(i[2])
+    # for i in roomList:
+    #     print(i[2])
+    print(roomList)
     # print(i[index])
     # if __name__ == '__main__':
     #     a = [[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6],[1,2,3,4,5,6]]
