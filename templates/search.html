@@ -33,7 +33,7 @@
             <a class="nav-link" href="/suggest/charter">추천</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/search">검색</a>
+            <a class="nav-link" href="/search/rangeSearch">검색</a>
           </li>
         </ul>
       </div>
@@ -47,35 +47,101 @@
           <h1 class="text-dark display-5 fw-bold">3조 전/월세 조회</h1>
         </div>
       </div>
-    {% if roomList%}
-    <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">지역</th>
-            <th scope="col">법정동</th>
-            <th scope="col">계약 면적</th>
-            <th scope="col">월세</th>
-            <th scope="col">보증금(전세)</th>
-            <th scope="col">건축년도</th>
-          </tr>
-        </thead>
-        
-        
-        <tbody>
-              {% for list in roomList%}
+      {% if index == 1 %}
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="/search/rangeSearch">범위</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/search/matchSearch">단어</a>
+        </li>
+        <div>
+
+          <form action= "/search/rangeSearch" method="get">
+            <input type="number" placeholder="인덱스(0~5)" name="index" />
+            <input type="number" placeholder="최댓값" name="max" />
+            <input type="number" placeholder="최솟값" name="min" />
+            <button class= "btn btn-primary" type="submit">검색</button>
+          </form>
+        </div>
+        {% elif index == 2 %}
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link " href="/search/rangeSearch">범위</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/search/matchSearch">단어</a>
+          </li>
+          <div>
+
+            <form action="/search/matchSearch" method="get">
+              <input type="number" placeholder="인덱스(0~5)" name="index" />
+              <input type="text" placeholder="검색할 내용" name="value" />
+              <button class= "btn btn-primary" type="submit">검색</button>
+            </form>
+          </div>
+      {% endif %}
+      
+        {% if time%}
+          <div id="time" >작업 시간 : {{time}} 초</div>
+        {% endif %}
+      </ul>
+      {% if index == 1%}
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">지역</th>
+              <th scope="col">법정동</th>
+              <th scope="col">계약 면적</th>
+              <th scope="col">월세</th>
+              <th scope="col">보증금(전세)</th>
+              <th scope="col">건축년도</th>
+            </tr>
+          </thead>
+          
+          
+          {% if rangeResult %}
+          <tbody>
+            {% for list in rangeResult%}
+            <tr>
+              {% for contents in list%}
+                  <td>{{contents}}</td>
+              {% endfor%}
+              </tr>
+             {% endfor%}
+              </tbody>
+          </table>
+          {% endif %}
+
+        {% endif %}
+        {% if index == 2%}
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">지역</th>
+                <th scope="col">법정동</th>
+                <th scope="col">계약 면적</th>
+                <th scope="col">월세</th>
+                <th scope="col">보증금(전세)</th>
+                <th scope="col">건축년도</th>
+              </tr>
+            </thead>
+            
+            
+            {% if matchResult %}
+            <tbody>
+              {% for list in matchResult%}
               <tr>
                 {% for contents in list%}
                     <td>{{contents}}</td>
                 {% endfor%}
                 </tr>
                {% endfor%}
-        
-            </tbody>
-        </table>
-        {% else %}
-        <p>데이터가 없습니다.</p>
-{% endif %}
-        
+                </tbody>
+            </table>
+            {% endif %}
+
+          {% endif %}
 </main>
 </body>
 </html>
