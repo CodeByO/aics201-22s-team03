@@ -115,7 +115,7 @@ class getData:
         
             return monthly, charter
         except Exception as error:
-            print("파일 처리 에러 발생",error)
+            print("[-]파일 처리 에러 발생",error)
     
     def checkFile(self,date=nowDate,locate=sejong):
         count = 0
@@ -150,7 +150,7 @@ class getData:
                         roomList.append(i)
                 return roomList
         except Exception as error:
-            print("파일 처리 에러 발생",error)
+            print("[-]파일 처리 에러 발생",error)
         
 
     # def __del__(self):
