@@ -1,13 +1,13 @@
+
 import requests
 import os
 from dotenv import load_dotenv
 import xmltodict
 import csv
 from datetime import datetime
-from pathlib import Path
 
 nowDate = datetime.today().strftime("%Y%m")
-
+sejong = '36110'
 load_dotenv(verbose=True)
 fpath = os.path.dirname(os.path.abspath(__file__))
 
@@ -23,8 +23,8 @@ class getData:
         self.api_key = requests.utils.unquote(api_key)
         self.url = os.getenv('API_URL')
     
-    def getApi(self,date=nowDate):
-        params = {'serviceKey': self.api_key, 'LAWD_CD' : '36110','DEAL_YMD':date}
+    def getApi(self,date=nowDate,locate=sejong):
+        params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
         response = None
         try:
             response = requests.get(self.url,params=params).content
@@ -44,8 +44,6 @@ class getData:
         except:
             pass
 
-
-
         if resultCode != '00':
             resultMsg = header['resultMsg']
             print("API 요청 에러 발생 resultCode : " + resultCode)
@@ -59,9 +57,9 @@ class getData:
             print("해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
-        self.dictToList(items['item'])
+        self.dictToList(items['item'],date,locate)
         
-    def dictToList(self,item):
+    def dictToList(self,item,date,locate):
         data = []
 
         for i in range(len(item)):
@@ -79,6 +77,8 @@ class getData:
         #api 요청 한것을 파일로 저장
         with open(fpath + '/roomList.csv', 'w', newline='') as f:
             writer = csv.writer(f)
+            writer.writerow(date)
+            writer.writerow(locate)
             writer.writerows(data)
 
         
@@ -94,41 +94,61 @@ class getData:
         return match[0][0]
 
 
-    def devideRoom(self,date=nowDate):
-        self.checkFile(date)
+    def devideRoom(self,date=nowDate,locate=sejong):
+        self.checkFile(date,locate)
+        count = 0
         try:
             with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
-
+                
                 roomList = csv.reader(file)
                 monthly = []
                 
                 charter = []
 
                 for i in roomList:
-                    if i[3] == '0':
-                        charter.append(i)
-                    else:
-                        monthly.append(i)
+                    count += 1
+                    if count > 2:
+
+                        if i[3] == '0':
+                            charter.append(i)
+                        else:
+                            monthly.append(i)
         
             return monthly, charter
         except Exception as error:
             print("파일 처리 에러 발생",error)
     
-    def checkFile(self,date=nowDate):
+    def checkFile(self,date=nowDate,locate=sejong):
+        count = 0
+
         if os.path.isfile(fpath + '/roomList.csv'):
-            return None
+            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+                checkData = []
+                for i in csv.reader(file):
+                    checkData.append(i)
+                    count += 1
+                    if(count == 2):
+                        break
+            checkDate = "".join(checkData[0])
+            checkLocal = "".join(checkData[1])
+
+            if(int(checkDate) != int(date) or int(checkLocal) != int(locate)):
+                self.getApi(date,locate)
         else:
-            self.getApi(date)
+            self.getApi(date,locate)
 
 
 
-    def roomList(self,date=nowDate):
-        self.checkFile(date)
+    def roomList(self,date=nowDate,locate=sejong):
+        self.checkFile(date,locate)
+        count = 0
         try:
             with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
                 roomList = []
                 for i in csv.reader(file):
-                    roomList.append(i)
+                    count += 1
+                    if count > 2:
+                        roomList.append(i)
                 return roomList
         except Exception as error:
             print("파일 처리 에러 발생",error)
@@ -140,8 +160,7 @@ class getData:
     #         os.remove(fpath + '/roomList.csv')
 
 
-# if __name__ == '__main__':
-#     test = getData()
-#     roomList = test.roomList('202203')
-
-#     print(roomList)
+if __name__ == '__main__':
+    test = getData()
+    roomList = test.roomList('202205')
+    print(roomList)
