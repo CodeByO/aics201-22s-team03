@@ -1,11 +1,12 @@
-from package import getData
+import queue
+from getData import getData
 import time
 
 
 
 #[Function] 자료구조를 이용한 추천 기능
 #[DESC] 힙을 이용하여 월세 또는 전세의 최저값인 데이터 리턴
-#[TODO] routes/suggests로 호출될시 suggestMontly에 월세 전세 힙정렬 에러 수정
+#[TODO] python에 맞거나 더욱 효율적으로 로직 수정
 
 class heap:
 
@@ -65,36 +66,80 @@ class heap:
             if i[index] != 0:
                 return i         
 
+class MinHeap:
+    
+    def __init__(self):
+        self.heap = [0]
+        self.current_size = 0
+ 
+    def swim(self, i, index):
+        while i // 2 > 0:
+            if self.heap[i][index] < self.heap[i // 2][index]:
+                self.heap[i], self.heap[i // 2] = self.heap[i // 2], self.heap[i]
+            i = i // 2
+ 
+    def insert(self, k, index):
+        self.heap = k
+        self.current_size += 1
+        self.swim(self.current_size, index)
 
-class suggest():
+    def min_child(self, i, index):
+        if (i * 2)+1 > self.current_size:
+            return i * 2
+        else:
+            if self.heap[i*2][index] < self.heap[(i*2)+1][index]:
+                return i * 2
+            else:
+                return (i * 2) + 1        
+        
+    def sink(self, i, index):
+        while (i * 2) <= self.current_size:
+            mc = self.min_child(i, index)
+            if self.heap[i][index] > self.heap[mc][index]:
+                self.heap[i], self.heap[mc] = self.heap[mc], self.heap[i]
+            i = mc
+ 
+    def delete_min(self,index):
+        if len(self.heap) == 1:
+            return None
+
+        root = self.heap[1]
+        self.heap[1] = self.heap[self.current_size]
+        *self.heap, _ = self.heap
+        self.current_size -= 1
+        self.sink(1,index)
+        return root
+
+
+
+class suggest:
     def __init__(self):
         data = getData.getData()
         self.monthly, self.charter = data.devideRoom('202203')
 
     def suggestMonthly(self):
-        start = time.time()
+        start = time.perf_counter()
         monthlyHeap = heap()
         charterHeap = heap()
         monthly = monthlyHeap.minHeap(self.monthly,3)
         charter = charterHeap.minHeap(self.monthly,4)
-        end = time.time() - start
-        return monthly, charter, end
+        end = time.perf_counter() - start
+        return monthly, charter, round(end, 3)
 
     def suggestCharter(self):
-        start = time.time()
+        start = time.perf_counter()
         minHeap = heap()
-        # poolCharter = ThreadPool(processes=3)
-        # asyncCharter = poolCharter.apply_async(minHeap.minHeap,(self.charter,4))
-        # charter = asyncCharter.get()
         charter = minHeap.minHeap(self.charter,4)
-        end = time.time() - start
+        end = time.perf_counter() - start
         return charter, round(end, 3)
 
-if __name__ == '__main__':
-    sug = suggest()
-    monthlyList,mCharterList,monthlyTime = sug.suggestMonthly()
-    print(monthlyList)
-    print(mCharterList)
-
-    charterList,charterTime = sug.suggestCharter()
-    print(charterList)
+# if __name__ == '__main__':
+#     data = getData()
+#     monthly, charter = data.devideRoom('202203')
+#     minheap = MinHeap()
+#     monthlyHeap = heap()
+#     monthlySort = monthlyHeap.minHeap(monthly,3)
+#     print(monthlySort)
+#     minheap.insert(monthly,3)
+#     print(minheap.heap[1])
+    
