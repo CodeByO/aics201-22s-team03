@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 #[Function] 자료구조를 이용한 각 요소 정렬
 #[DESC] 면적, 월세, 전세 각 분야를 3가지 정렬로 각각 정렬
-#[TODO] 면적 정렬 추가 후 데이터는 어디서 넣어줄건지 고민
+#[TODO] 면적 정렬 추가 후 데이터와 수행 시간 측정은 어디서 넣어줄건지 고민
 
 class areaSort:
     def insertSort(self,roomList, index):
