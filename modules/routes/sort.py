@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template
 import sys,os
-
+from package import sort
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 #[Function] 추천 요청
 #[DESC] 클라이언트로 받은 추천 요청 처리
 #[TODO] 기능 작성
 
+areaS = sort.areaSort()
 
 blueprint = Blueprint("sort", __name__, url_prefix='/sort')
 
@@ -16,15 +17,16 @@ def index():
 
 @blueprint.route('/area/<int:sortId>')
 def area(sortId):
+    roomList = []
     if sortId == 1:
-        pass
+        roomList = areaS.insertSort()
     elif sortId == 2:
-        pass
+        roomList = areaS.mergeSort()
     elif sortId == 3:
-        pass
+        roomList = areaS.quickSort()
     else:
-        pass
-    return render_template('sort.html')
+        roomList = None
+    return render_template('sort.html',roomList = roomList)
 
 @blueprint.route('/deposit/<int:sortId>')
 def deposit(sortId):
