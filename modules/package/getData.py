@@ -27,10 +27,10 @@ class getData:
         response = None
         try:
             response = requests.get(self.url,params=params).content
-        except requests.exceptions.Timeout as errd:
-            print("타임아웃 에러 : ", errd)
-        except requests.exceptions.ConnectionError as errc:
-            print("연결 에러 : ", errc)
+        except requests.exceptions.Timeout:
+            print("[-]타임아웃 에러")
+        except requests.exceptions.ConnectionError:
+            print("[-]연결 에러")
     
         
         xmlData = xmltodict.parse(response)
