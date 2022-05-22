@@ -7,7 +7,7 @@
 
 from package import *
 
-__all__ = ['getData']
+__all__ = ['getData','suggest','sort','search']
 
 
 __version__ = '0.0.1'
