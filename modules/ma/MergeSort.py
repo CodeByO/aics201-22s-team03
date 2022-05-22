@@ -42,7 +42,6 @@ def mergeSort(data, index):
 if __name__ == '__main__':
     data = getData.getData()
     roomList = data.roomList('202203')
-    test =[4,3,6,7,8,9,11,2,4,6,1]
     data= mergeSort(roomList, 2)
     for i in data:
         print(i[2])
