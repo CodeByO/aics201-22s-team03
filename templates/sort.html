@@ -47,6 +47,27 @@
           <h1 class="text-dark display-5 fw-bold">3조 전/월세 조회</h1>
         </div>
       </div>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="/sort/area">면적</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/monthly">월세</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/deposit">전세</a>
+        </li>
+      <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          정렬 방식
+        </a>
+      
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/area/1">삽입</a>
+          <a class="dropdown-item" href="/sort/area/2">병합</a>
+          <a class="dropdown-item" href="/sort/area/3">퀵</a>
+        </div>
+      </div>
     {% if roomList%}
     <table class="table table-bordered">
         <thead>
