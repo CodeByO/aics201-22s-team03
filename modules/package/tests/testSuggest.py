@@ -7,7 +7,9 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from suggest import *
 
-
+#[Function] suggest.py 테스트 파일
+#[DESC] suggest.py의 중요한 메서드 테스트
+#[TODO] 자료형 이외에 테스트 할것이 있는지 고민 핑요
 '''
 테스트 목록
 

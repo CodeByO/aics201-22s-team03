@@ -2,10 +2,15 @@ import unittest
 import sys
 import os
 from datetime import datetime
+import csv
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from getData import getData
 
+#[Function] getData.py 테스트 파일
+#[DESC] getData.py의 각 중요한 메소드 테스트
+#[TODO] test_checkFile 메서드 완성 및 에러 테스트 완성
+#[ISSUE] test_checkFile에서 getAPI 메서드 호출 시 데이터를 받아오지 못함
 
 '''
 테스트 목록
@@ -53,14 +58,11 @@ class getDataTest(unittest.TestCase):
     
     def test_getApiError(self):
         pass
-    
-    def test_checkFile(self):
-        pass
 
 
     # def test_checkFile(self):
-    #     date = '202203'
-    #     locate = '31000'
+    #     date = '202204'
+    #     locate = '11000'
 
     #     count = 0
     #     count2 = 0
@@ -75,7 +77,7 @@ class getDataTest(unittest.TestCase):
     #     checkLocal = "".join(checkData[1])
 
 
-    #     self.data.getApi(date,locate)
+    #     self.data.roomList(date,locate)
 
     #     with open('../roomList.csv','r',encoding='UTF-8') as file:
     #         checkData2 = []
@@ -87,12 +89,8 @@ class getDataTest(unittest.TestCase):
     #     checkDate2 = "".join(checkData[0])
     #     checkLocal2 = "".join(checkData[1])
 
-    #     if self.assertNotEqual(checkDate,checkDate2) and self.assertNotEqual(checkLocal,checkLocal2):
-    #         print("[+]checkFile 통과") 
-    #         print("----------------------------------------------------------------------")
-    #     else:
-    #         print("[-]checkFile 실패") 
-    #         print("----------------------------------------------------------------------")
+    #     self.assertNotEqual(checkDate,checkDate2) 
+    #     self.assertNotEqual(checkLocal,checkLocal2)
 
     # def testDown(self):
     #     try:
