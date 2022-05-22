@@ -12,7 +12,6 @@ from package import suggest
 
 blueprint = Blueprint("suggest", __name__, url_prefix='/suggest')
 sug = suggest.suggest()
-
 @blueprint.route('/')
 def index():
         return render_template('suggest.html')
@@ -27,4 +26,7 @@ def suggestCharter():
 def suggestMonthly():
 
         monthlyList,charterList,monthlyTime = sug.suggestMonthly()
-        return render_template('suggest.html',monthlyList=monthlyList,charterList=charterList,time=monthlyTime)
+        roomList = []
+        roomList.append(monthlyList)
+        roomList.append(charterList)
+        return render_template('suggest.html',monthlyList=roomList,time=monthlyTime)
