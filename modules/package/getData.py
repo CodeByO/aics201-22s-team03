@@ -29,8 +29,10 @@ class getData:
             response = requests.get(self.url,params=params).content
         except requests.exceptions.Timeout:
             print("[-]타임아웃 에러")
+            return None
         except requests.exceptions.ConnectionError:
             print("[-]연결 에러")
+            return None
     
         
         xmlData = xmltodict.parse(response)
@@ -41,7 +43,7 @@ class getData:
         try:
             items = xmlData['response']['body']['items']
         except:
-            pass
+            return None
 
         if resultCode != '00':
             resultMsg = header['resultMsg']
@@ -152,6 +154,11 @@ class getData:
         except Exception as error:
             print("[-]파일 처리 에러 발생",error)
         
+    def locateList(self,locate,date=nowDate):
+        pass
+
+    def dateList(self,date,locate=sejong):
+        pass
 
     # def __del__(self):
 
