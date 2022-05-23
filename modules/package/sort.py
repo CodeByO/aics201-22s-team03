@@ -1,14 +1,19 @@
-import sys,os
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from package import getData
+from datetime import datetime
+import time
+import copy
 
 
 #[Function] 자료구조를 이용한 각 요소 정렬
 #[DESC] 면적, 월세, 전세 각 분야를 3가지 정렬로 각각 정렬
 #[TODO] 면적 정렬 추가 후 데이터와 수행 시간 측정은 어디서 넣어줄건지 고민
 
+nowDate = datetime.today().strftime("%Y%m")
+sejong = '36110'
+
 class areaSort:
-    def insertSort(self,roomList, index):
-        data = roomList
+    def insertSort(self,roomList):
+        data = copy.deepcopy(roomList)
         for j in range(1, len(data)):
             for i in range(j, 0, -1):
                 if float(data[i][2]) < float(data[i-1][2]):
@@ -17,7 +22,8 @@ class areaSort:
                     break
         return data
 
-    def mergeSort(self, data, index):
+    def mergeSort(self, roomList):
+        data = copy.deepcopy(roomList)
         if len(data) < 2:
             return data
         low = [[0]*5 for _ in range(500)]
@@ -25,8 +31,7 @@ class areaSort:
         
             # 리스트 초기화
         
-        # if len(data) < 2:
-        #     return data
+
         middle = len(data) // 2 # data 길이 중간 값 취함    
 
         low = self.mergeSort(data[:middle], 2)
@@ -34,7 +39,7 @@ class areaSort:
 
         merged = []
         h = l = 0
-        # for i in range(1, len(data)):
+
         while l < len(low) and h < len(high):
             if float(low[l][2]) < float(high[h][2]):
                 merged.append(low[l])
@@ -50,7 +55,7 @@ class areaSort:
 
     def quickSort(self, roomList, first, final):
         
-        data = roomList
+        data = copy.deepcopy(roomList)
         
         if first >= final:
             return
@@ -73,6 +78,38 @@ class areaSort:
         
 
         return data
+
+class sort:
+
+    def __init__(self,date=nowDate,locate=sejong):
+        data = getData.getData()
+        self.roomList = data.roomList(date,locate)
+        self.monthlyList, self.charterList = data.devideRoom(date,locate)
+    def area(self,index):
+        areaS = areaSort()
+        sorted = []
+        if index == 1:
+            start = time.perf_counter()
+            sorted = areaS.insertSort(self.roomList)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif index == 2:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.roomList)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif index == 3:
+            start = time.perf_counter()
+            sorted = areaS.quickSort(self.roomList, 0, len(self.roomList)-1)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        else:
+            return
+    def deposit(self):
+        pass
+    
+    def monthly(self):
+        pass
 
 
 # if __name__ == '__main__':

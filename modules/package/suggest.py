@@ -1,12 +1,17 @@
-import queue
 from package import getData
+from datetime import datetime
 import time
 
 
 
 #[Function] 자료구조를 이용한 추천 기능
 #[DESC] 힙을 이용하여 월세 또는 전세의 최저값인 데이터 리턴
-#[TODO] python에 맞거나 더욱 효율적으로 로직 수정
+
+
+
+nowDate = datetime.today().strftime("%Y%m")
+sejong = '36110'
+
 
 class heap:
 
@@ -113,9 +118,9 @@ class MinHeap:
 
 
 class suggest:
-    def __init__(self):
+    def __init__(self,date=nowDate,locate=sejong):
         data = getData.getData()
-        self.monthly, self.charter = data.devideRoom('202203')
+        self.monthly, self.charter = data.devideRoom(date,locate)
 
     def suggestMonthly(self):
         start = time.perf_counter()
