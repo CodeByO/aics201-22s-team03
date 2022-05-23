@@ -13,7 +13,7 @@ fpath = os.path.dirname(os.path.abspath(__file__))
 #[Function] Open API 데이터 호출
 #[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
 #[TODO] 여러 날짜 및 지역을 저장하는 코드 작성
-
+#[ISSUE] locateList와 dateList 메서드 실행시 어떤 방식으로 여러개 데이터를 요청해서 저장할지 고민 중 
 
 class getData:
     
@@ -23,9 +23,16 @@ class getData:
         self.detchUrl = os.getenv('DETCH_URI')
         self.rowUrl = os.getenv('ROW_URI')
         self.mode = 1
-    
-    def getApi(self, date=nowDate,locate=sejong, mode=1):
-        self.mode = mode
+        self.fileName = '/roomList.csv'
+
+
+    def getApi(self, date=nowDate,locate=sejong,mode=1):
+        if type(locate) is list:
+            self.fileName = '/locateList.csv'
+            self.mode = 2
+        elif type(date) is list:
+            self.fileName = '/dateList.csv'
+            self.mode = 3
         params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
         detchResponse = None
         rowResponse = None
@@ -91,7 +98,7 @@ class getData:
         self.dictToList(item,date,locate)
         
     def dictToList(self,item,date,locate):
-        
+        print(self.fileName)
         if item == None:
             return None
         data = []
@@ -109,16 +116,16 @@ class getData:
             data.append(tmp)
 
         if self.mode == 1:
-            # 일반적인 데이터 요청을 파일로 저장
-            with open(fpath + '/roomList.csv', 'w', encoding='utf-8', newline='') as file:
+            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(date)
                 writer.writerow(locate)
                 writer.writerows(data)
                 file.close()
+                # 일반적인 데이터 요청을 파일로 저장
         elif self.mode == 2:
             # 지역을 리스트로 받을 때 받은 요청을 파일로 저장
-            with open(fpath + '/roomList.csv', 'w', encoding='utf-8', newline='') as file:
+            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(date)
                 writer.writerow(locate)
@@ -127,12 +134,25 @@ class getData:
 
         elif self.mode == 3:
             # 날짜를 리스트로 받을 때 받은 요청을 파일로 저장
-            with open(fpath + '/roomList.csv', 'w', encoding='utf-8', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(date)
-                writer.writerow(locate)
-                writer.writerows(data)
-                file.close()
+            # with open(fpath + '/dateList.csv', 'w', encoding='utf-8', newline='') as file:
+            #     writer = csv.writer(file)
+            #     writer.writerow(date)
+            #     writer.writerow(locate)
+            #     writer.writerows(data)
+            #     file.close()
+            if os.path.isfile(fpath + self.fileName):
+                with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(data)
+                    file.close()
+            else:
+                with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(date)
+                    writer.writerow(locate)
+                    file.close()
+
+
 
     def findLocal(self,target):
         with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
@@ -149,7 +169,7 @@ class getData:
         self.checkFile(date,locate)
         count = 0
         try:
-            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 
                 roomList = csv.reader(file)
                 monthly = []
@@ -158,12 +178,12 @@ class getData:
 
                 for i in roomList:
                     count += 1
-                    if count > 2:
-
-                        if i[3] == '0':
-                            charter.append(i)
-                        else:
-                            monthly.append(i)
+                    if count < 3:
+                        continue
+                    if i[4] == '0':
+                        charter.append(i)
+                    else:
+                        monthly.append(i)    
                 file.close()
             return monthly, charter
         except Exception as error:
@@ -171,10 +191,11 @@ class getData:
             return None
     
     def checkFile(self,date=nowDate,locate=sejong):
+        print(self.fileName)
         count = 0
 
-        if os.path.isfile(fpath + '/roomList.csv'):
-            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+        if os.path.isfile(fpath + self.fileName):
+            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 checkData = []
                 for i in csv.reader(file):
                     checkData.append(i)
@@ -186,6 +207,7 @@ class getData:
             file.close()
 
             if(int(checkDate) != int(date) or int(checkLocal) != int(locate)):
+                os.remove(fpath + self.fileName)
                 self.getApi(date,locate)
         else:
             self.getApi(date,locate)
@@ -193,40 +215,45 @@ class getData:
 
 
     def roomList(self,date=nowDate,locate=sejong):
-        self.checkFile(date,locate)
+        # self.checkFile(date,locate)
         count = 0
         try:
             with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
                 roomList = []
                 for i in csv.reader(file):
                     count += 1
-                    if count > 2:
-                        roomList.append(i)
+                    if count < 3:
+                        continue
+                    roomList.append(i)
                 file.close()
                 return roomList
                 
         except Exception as error:
-            print("[-]파일 처리 에러 발생",error)
+            print("[-] roomList.csv 파일 처리 에러 발생",error)
             return None
         
-    def locateList(self,locate,date=nowDate):
+    def locateList(self,date,locate):
+        if date == None or locate == None :
+            return None
         locateMode = 2
-        if locate is list:
-            for i in locate:
-                self.getApi(date,i,locateMode)
-
+        print(type(locate))
+        if type(locate) is list:
+            print("list 조건 통과")
+            self.getApi(date,locate)
+            count = 0
             try:
-                with open(fpath + '/locateList.csv','r',encoding='UTF-8') as file:
+                with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                     roomList = []
                     for i in csv.reader(file):
                         count += 1
-                        if count > 2:
-                            roomList.append(i)
+                        if count < 3:
+                            continue
+                        roomList.append(i)
                     file.close()
                     return roomList
                 
             except Exception as error:
-                print("[-]파일 처리 에러 발생",error)
+                print("[-] locateList.csv 파일 처리 에러 발생")
                 return None
 
         else:
@@ -234,23 +261,27 @@ class getData:
                    
 
     def dateList(self,date,locate=sejong):
+        
+        if date == None or locate == None :
+            return None
+
         dateMode = 3
-        if date is list:
-            for i in date:
-                self.getApi(i,locate,dateMode)
-            
+        if type(date) is list:
+            self.getApi(date,locate)
+            count = 0
             try:
-                with open(fpath + '/dateList.csv','r',encoding='UTF-8') as file:
+                with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                     roomList = []
                     for i in csv.reader(file):
                         count += 1
-                        if count > 2:
-                            roomList.append(i)
+                        if count < 3:
+                            continue
+                        roomList.append(i)
                     file.close()
                     return roomList
                 
             except Exception as error:
-                print("[-]파일 처리 에러 발생",error)
+                print("[-] dateList.csv 파일 처리 에러 발생",error)
                 return None
 
         else:
@@ -259,9 +290,14 @@ class getData:
 
     #     if os.path.isfile(fpath + '/roomList.csv'):
     #         os.remove(fpath + '/roomList.csv')
+    #     if os.path.isfile(fpath + '/dateList.csv'):
+    #         os.remove(fpath + '/dateList.csv')
+    #     if os.path.isfile(fpath + '/locateList.csv'):
+    #         os.remove(fpath + '/locateList.csv')
 
 
 if __name__ == '__main__':
     test = getData()
-    roomList = test.roomList('202105','36110')
-    print(roomList[0])
+    date = ['202201','202202','202203','202204','202205']
+    locate = ['36110','11110']
+    roomList = test.dateList(date,'36110')
