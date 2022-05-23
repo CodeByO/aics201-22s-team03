@@ -16,7 +16,7 @@ class areaSort:
         data = copy.deepcopy(roomList)
         for j in range(1, len(data)):
             for i in range(j, 0, -1):
-                if float(data[i][2]) < float(data[i-1][2]):
+                if float(data[i][3]) < float(data[i-1][3]):
                     data[i], data[i-1] = data[i-1], data[i]
                 else:
                     break
@@ -34,14 +34,14 @@ class areaSort:
 
         middle = len(data) // 2 # data 길이 중간 값 취함    
 
-        low = self.mergeSort(data[:middle], 2)
-        high = self.mergeSort(data[middle:], 2)   
+        low = self.mergeSort(data[:middle])
+        high = self.mergeSort(data[middle:])   
 
         merged = []
         h = l = 0
 
         while l < len(low) and h < len(high):
-            if float(low[l][2]) < float(high[h][2]):
+            if float(low[l][3]) < float(high[h][3]):
                 merged.append(low[l])
                 l += 1
             else:
@@ -65,9 +65,9 @@ class areaSort:
         high = final
 
         while low <= high:
-            while low <= final and float(data[low][2]) <= float(data[pivot][2]):
+            while low <= final and float(data[low][3]) <= float(data[pivot][3]):
                 low +=1
-            while high>first and float(data[high][2]) >= float(data[pivot][2]):
+            while high>first and float(data[high][3]) >= float(data[pivot][3]):
                 high -= 1
             if low > high:
                 data[high],data[pivot] = data[pivot],data[high]
