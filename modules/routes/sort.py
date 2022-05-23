@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 #[DESC] 클라이언트로 받은 추천 요청 처리
 #[TODO] 기능 작성
 
-areaS = sort.areaSort()
+
 
 blueprint = Blueprint("sort", __name__, url_prefix='/sort')
 
@@ -17,19 +17,15 @@ def index():
 
 @blueprint.route('/area/<int:sortId>')
 def area(sortId):
-    roomList = []
-    if sortId == 1:
-        roomList = areaS.insertSort()
-    elif sortId == 2:
-        roomList = areaS.mergeSort()
-    elif sortId == 3:
-        roomList = areaS.quickSort()
-    else:
-        roomList = None
-    return render_template('sort.html',roomList = roomList)
+    page = "area"
+    s = sort.sort()
+    sorted, time = s.area(sortId)
+    return render_template('sort.html',roomList=sorted, time=time ,page=page)
 
-@blueprint.route('/deposit/<int:sortId>')
-def deposit(sortId):
+
+@blueprint.route('/charter/<int:sortId>')
+def charter(sortId):
+    page = "charter"
     if sortId == 1:
         pass
     elif sortId == 2:
@@ -42,6 +38,7 @@ def deposit(sortId):
 
 @blueprint.route('/monthly/<int:sortId>')
 def monthly(sortId):
+    page = "monthly"
     if sortId == 1:
         pass
     elif sortId == 2:

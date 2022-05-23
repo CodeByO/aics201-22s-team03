@@ -18,15 +18,15 @@ def index():
 
 @blueprint.route('/charter')
 def suggestCharter():
-        
+        page = "charter"
         charterList,charterTime = sug.suggestCharter()
-        return render_template('suggest.html',roomList=charterList,time=charterTime)
+        return render_template('suggest.html',roomList=charterList,time=charterTime, page = page)
 
 @blueprint.route('/monthly')
 def suggestMonthly():
-
+        page = "monthly"
         monthlyList,charterList,monthlyTime = sug.suggestMonthly()
         roomList = []
         roomList.append(monthlyList)
         roomList.append(charterList)
-        return render_template('suggest.html',monthlyList=roomList,time=monthlyTime)
+        return render_template('suggest.html',monthlyList=roomList,time=monthlyTime, page=page)
