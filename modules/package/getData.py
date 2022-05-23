@@ -85,42 +85,27 @@ class getData:
             print("[-]해당 하는 데이터가 없음")
             print("------------------------------------")
             return None
+ 
 
-
-        detchHouse = detchItems['item']
-        rowHouse = rowItems['item']
-        self.dictToList(detchHouse,rowHouse,date,locate)
+        item = detchItems['item'] + rowItems['item']
+        self.dictToList(item,date,locate)
         
-    def dictToList(self,detch,row,date,locate):
+    def dictToList(self,item,date,locate):
         
-        if detch == None:
+        if item == None:
             return None
-        
-
         data = []
-        #단독/다가구 데이터 일때 리스트 화
-        for i in range(len(detch)):
+        for i in range(len(item)):
+            
             tmp = []
-            tmp.append(self.findLocal(detch[i]['지역코드']))
-            tmp.append(detch[i]['법정동'])
-            tmp.append("단독/다가구")
-            tmp.append(detch[i]['계약면적'])
-            tmp.append(detch[i].get('층','0'))
-            tmp.append(detch[i]['월세금액'])
-            tmp.append(detch[i]['보증금액'].replace(",",""))
-            tmp.append(detch[i].get('건축년도','0000'))
-            data.append(tmp)
-
-        for i in range(len(row)):
-            tmp = []
-            tmp.append(self.findLocal(row[i]['지역코드']))
-            tmp.append(row[i]['법정동'])
-            tmp.append(row[i]['연립다세대'])
-            tmp.append(row[i]['전용면적'])
-            tmp.append(row[i].get('층','0'))
-            tmp.append(row[i]['월세금액'])
-            tmp.append(row[i]['보증금액'].replace(",",""))
-            tmp.append(row[i].get('건축년도','0000'))
+            tmp.append(self.findLocal(item[i]['지역코드']))
+            tmp.append(item[i]['법정동'])
+            tmp.append(item[i]['연립다세대'] if item[i].__contains__('연립다세대') else "단독/다가구")
+            tmp.append(item[i]['계약면적'] if item[i].__contains__('계약면적') else item[i]['전용면적'])
+            tmp.append(item[i].get('층','0'))
+            tmp.append(item[i]['월세금액'])
+            tmp.append(item[i]['보증금액'].replace(",",""))
+            tmp.append(item[i].get('건축년도','0000'))
             data.append(tmp)
 
         if self.mode == 1:
