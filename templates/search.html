@@ -17,23 +17,20 @@
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">3조</a>
+      <a class="navbar-brand" href="/">3조</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/sort">정렬</a>
+            <a class="nav-link" href="/sort/area/1">정렬</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/suggest/charter">추천</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/search/rangeSearch">검색</a>
+            <a class="nav-link active" href="/search/rangeSearch">검색</a>
           </li>
         </ul>
       </div>
@@ -47,7 +44,7 @@
           <h1 class="text-dark display-5 fw-bold">3조 전/월세 조회</h1>
         </div>
       </div>
-      {% if index == 1 %}
+      {% if page == "range" %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a class="nav-link active" href="/search/rangeSearch">범위</a>
@@ -58,13 +55,13 @@
         <div>
 
           <form action= "/search/rangeSearch" method="get">
-            <input type="number" placeholder="인덱스(0~5)" name="index" />
+            <input type="number" placeholder="인덱스(2~5)" name="index" />
             <input type="number" placeholder="최댓값" name="max" />
             <input type="number" placeholder="최솟값" name="min" />
             <button class= "btn btn-primary" type="submit">검색</button>
           </form>
         </div>
-        {% elif index == 2 %}
+        {% elif page == "match" %}
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link " href="/search/rangeSearch">범위</a>
@@ -75,7 +72,7 @@
           <div>
 
             <form action="/search/matchSearch" method="get">
-              <input type="number" placeholder="인덱스(0~5)" name="index" />
+              <input type="number" placeholder="인덱스(2~5)" name="index" />
               <input type="text" placeholder="검색할 내용" name="value" />
               <button class= "btn btn-primary" type="submit">검색</button>
             </form>
@@ -86,7 +83,7 @@
           <div id="time" >작업 시간 : {{time}} 초</div>
         {% endif %}
       </ul>
-      {% if index == 1%}
+      {% if page == "range" %}
       <table class="table table-bordered">
           <thead>
             <tr>
@@ -114,7 +111,7 @@
           {% endif %}
 
         {% endif %}
-        {% if index == 2%}
+        {% if page == "match"%}
         <table class="table table-bordered">
             <thead>
               <tr>
