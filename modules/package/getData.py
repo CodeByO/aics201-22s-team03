@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import xmltodict
 import csv
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 
 nowDate = datetime.today().strftime("%Y%m")
 sejong = '36110'
@@ -22,83 +23,88 @@ class getData:
         self.api_key = requests.utils.unquote(api_key)
         self.detchUrl = os.getenv('DETCH_URI')
         self.rowUrl = os.getenv('ROW_URI')
-        self.mode = 1
         self.fileName = '/roomList.csv'
 
-
-    def getApi(self, date=nowDate,locate=sejong,mode=1):
-        if type(locate) is list:
-            self.fileName = '/locateList.csv'
-            self.mode = 2
-        elif type(date) is list:
-            self.fileName = '/dateList.csv'
-            self.mode = 3
-        params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
-        detchResponse = None
-        rowResponse = None
+    def getUrl(self,url):
         try:
-            detchResponse = requests.get(self.detchUrl,params=params).content
-            rowResponse = requests.get(self.rowUrl,params=params).content
+            return requests.get(url[0],params=url[1]).content
         except requests.exceptions.Timeout:
             print("[-]타임아웃 에러")
             return None
         except requests.exceptions.ConnectionError:
             print("[-]연결 에러")
             return None
-    
+
+    def getApi(self, date=nowDate,locate=sejong):
+
+        if type(locate) is list and type(date) is str:
+            dateRequestList = []
+            self.fileName = '/locateList.csv'
+            for i in locate:
+                params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':date}
+                dateRequestList.append([self.detchUrl,params])
+                dateRequestList.append([self.rowUrl,params])
+        elif type(locate) is str and type(date) is list:
+            self.fileName = '/dateList.csv'
+            dateRequestList = []
+            for i in date:
+                params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':i}
+                dateRequestList.append([self.detchUrl,params])
+                dateRequestList.append([self.rowUrl,params])
+        elif type(date) is list and type(date) is list:
+            dateRequestList = []
+            self.fileName = '/multiList.csv'
+            for i in locate:
+                for j in date:
+                    params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':j}
+                    dateRequestList.append([self.detchUrl,params])
+                    dateRequestList.append([self.rowUrl,params])
+        else:
+            dateRequestList = []
+            params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
+            dateRequestList.append([self.detchUrl,params])
+            dateRequestList.append([self.rowUrl,params])
+
+
+        responseList = []
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            responseList = list(pool.map(self.getUrl,dateRequestList))
         
-        detchXmlData = xmltodict.parse(detchResponse)
-        rowXmlData = xmltodict.parse(rowResponse)
+        item = []
+        for i in responseList:
+            item += self.dataCheck(i)
+        
+        self.dictToList(item,date,locate)
+    
+    def dataCheck(self,data):
+        xmlData = xmltodict.parse(data)
 
-        detchHeader = detchXmlData['response']['header']
-        rowHeader = rowXmlData['response']['header']
+        header = xmlData['response']['header']
 
-        detchResultCode = detchHeader['resultCode']
-        rowResultCode = rowHeader['resultCode']
+        resultCode = header['resultCode']
 
-        detchItems = None
-        rowItems = None
+        items = None
         try:
-            detchItems = detchXmlData['response']['body']['items']
-            rowItems = rowXmlData['response']['body']['items']
+            items = xmlData['response']['body']['items']
 
         except:
-            return None
-        if detchResultCode != '00':
-            resultMsg = detchHeader['resultMsg']
-            print("[-]API 요청 에러 발생 resultCode : " + detchResultCode)
+
+            if items == None:
+                print("[-]API 요청 에러 발생")
+                print("------------------------------------")
+                print("[-]해당 하는 데이터가 없음")
+                print("------------------------------------")
+                return None
+        if resultCode != '00':
+            resultMsg = header['resultMsg']
+            print("[-]API 요청 에러 발생 resultCode : " + resultCode)
             print("------------------------------------")
             print("[-]"+resultMsg)
             print("------------------------------------")
             return None 
-        elif rowResultCode != '00':
-            resultMsg = rowHeader['resultMsg']
-            print("[-]API 요청 에러 발생 resultCode : " + rowResultCode)
-            print("------------------------------------")
-            print("[-]"+resultMsg)
-            print("------------------------------------")
-            return None 
+        return items['item']
 
-
-        if detchItems == None:
-            print("[-]단독/다가구 API 요청 에러 발생")
-            print("------------------------------------")
-            print("[-]해당 하는 데이터가 없음")
-            print("------------------------------------")
-            return None
-        elif rowItems == None:
-            print("[-]연립주택 API 요청 에러 발생")
-            print("------------------------------------")
-            print("[-]해당 하는 데이터가 없음")
-            print("------------------------------------")
-            return None
- 
-
-        item = detchItems['item'] + rowItems['item']
-        self.dictToList(item,date,locate)
-        
     def dictToList(self,item,date,locate):
-        print(self.fileName)
         if item == None:
             return None
         data = []
@@ -115,42 +121,12 @@ class getData:
             tmp.append(item[i].get('건축년도','0000'))
             data.append(tmp)
 
-        if self.mode == 1:
-            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(date)
-                writer.writerow(locate)
-                writer.writerows(data)
-                file.close()
-                # 일반적인 데이터 요청을 파일로 저장
-        elif self.mode == 2:
-            # 지역을 리스트로 받을 때 받은 요청을 파일로 저장
-            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(date)
-                writer.writerow(locate)
-                writer.writerows(data)
-                file.close()
-
-        elif self.mode == 3:
-            # 날짜를 리스트로 받을 때 받은 요청을 파일로 저장
-            # with open(fpath + '/dateList.csv', 'w', encoding='utf-8', newline='') as file:
-            #     writer = csv.writer(file)
-            #     writer.writerow(date)
-            #     writer.writerow(locate)
-            #     writer.writerows(data)
-            #     file.close()
-            if os.path.isfile(fpath + self.fileName):
-                with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-                    writer = csv.writer(file)
-                    writer.writerows(data)
-                    file.close()
-            else:
-                with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-                    writer = csv.writer(file)
-                    writer.writerow(date)
-                    writer.writerow(locate)
-                    file.close()
+        with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(date)
+            writer.writerow(locate)
+            writer.writerows(data)
+            file.close()
 
 
 
@@ -191,7 +167,6 @@ class getData:
             return None
     
     def checkFile(self,date=nowDate,locate=sejong):
-        print(self.fileName)
         count = 0
 
         if os.path.isfile(fpath + self.fileName):
@@ -206,7 +181,7 @@ class getData:
             checkLocal = "".join(checkData[1])
             file.close()
 
-            if(int(checkDate) != int(date) or int(checkLocal) != int(locate)):
+            if(checkDate != date or checkLocal != locate):
                 os.remove(fpath + self.fileName)
                 self.getApi(date,locate)
         else:
@@ -215,10 +190,10 @@ class getData:
 
 
     def roomList(self,date=nowDate,locate=sejong):
-        # self.checkFile(date,locate)
+        self.checkFile(date,locate)
         count = 0
         try:
-            with open(fpath + '/roomList.csv','r',encoding='UTF-8') as file:
+            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 roomList = []
                 for i in csv.reader(file):
                     count += 1
@@ -229,63 +204,12 @@ class getData:
                 return roomList
                 
         except Exception as error:
-            print("[-] roomList.csv 파일 처리 에러 발생",error)
+            print("[-]" + self.fileName + " 파일 처리 에러 발생",error)
             return None
-        
-    def locateList(self,date,locate):
-        if date == None or locate == None :
-            return None
-        locateMode = 2
-        print(type(locate))
-        if type(locate) is list:
-            print("list 조건 통과")
-            self.getApi(date,locate)
-            count = 0
-            try:
-                with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
-                    roomList = []
-                    for i in csv.reader(file):
-                        count += 1
-                        if count < 3:
-                            continue
-                        roomList.append(i)
-                    file.close()
-                    return roomList
-                
-            except Exception as error:
-                print("[-] locateList.csv 파일 처리 에러 발생")
-                return None
 
-        else:
-            return None 
                    
 
-    def dateList(self,date,locate=sejong):
-        
-        if date == None or locate == None :
-            return None
 
-        dateMode = 3
-        if type(date) is list:
-            self.getApi(date,locate)
-            count = 0
-            try:
-                with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
-                    roomList = []
-                    for i in csv.reader(file):
-                        count += 1
-                        if count < 3:
-                            continue
-                        roomList.append(i)
-                    file.close()
-                    return roomList
-                
-            except Exception as error:
-                print("[-] dateList.csv 파일 처리 에러 발생",error)
-                return None
-
-        else:
-            return None
     # def __del__(self):
 
     #     if os.path.isfile(fpath + '/roomList.csv'):
@@ -300,4 +224,5 @@ if __name__ == '__main__':
     test = getData()
     date = ['202201','202202','202203','202204','202205']
     locate = ['36110','11110']
-    roomList = test.dateList(date,'36110')
+    roomList = test.roomList(date,locate)
+    print(len(roomList))
