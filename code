@@ -1,0 +1,49 @@
+import os
+import json
+import requests
+
+import xmltodict
+
+
+"""
+    공공데이터 포털(https://www.data.go.kr/data/15058352/openapi.do)의 
+    국토교통부 단독/다가구 전월세 API를 통하여 데이터를 받는 함수
+    
+    파라미터는 아래와 같습니다
+    serviceKey : API Key
+    return_num : 반환 받을 데이터 개수
+    LAWD_CD : 법정동 코드 (https://www.code.go.kr/stdcode/regCodeL.do서 확인가능) 
+    default : 36110 (세종 특별시는 36110)
+    DEAL_YMD : 계약 년월(YYYYMM)
+    default : 201512
+
+"""
+
+SERVICE_KEY = 'czZF4GEzVoOWcxeyGxUp25L+bbb6uGCGa+WQIN7JimzzloThfIaEqO/qnq3N7yU58nUiqOrlKBEZGgOKYC1rjw=='
+
+def getdatafromAPI(serviceKey, return_num, LAWD_CD=36110, DEAL_YMD=201512):
+    url = 'http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcSHRent'
+    params ={'serviceKey' : serviceKey,
+             'LAWD_CD' : LAWD_CD, 
+             'DEAL_YMD' : DEAL_YMD }
+    
+    response = requests.get(url, headers={'Content-Type': 'application/json', 'charset': 'UTF-8', 'Accept': '*/*'}, params=params)
+    data = response.content.decode("utf-8")
+    
+    result = xmltodict.parse(data)
+    dictionay = json.loads(json.dumps(result))
+    
+    call_data = dictionay["response"]["body"]["items"]["item"]
+    
+    for i in range(len(call_data)):
+        call_data[i]["월세금액"] = int(call_data[i]["월세금액"])
+        
+    call_data = sorted(call_data,key=lambda x: x["월세금액"], reverse=True)
+    
+    return call_data[:return_num]
+
+if __name__ == '__main__':
+    
+    #Test
+    data = getdatafromAPI(SERVICE_KEY, 5)
+    print(data)
