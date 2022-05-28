@@ -44,13 +44,15 @@ class getData:
                 params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':date}
                 dateRequestList.append([self.detchUrl,params])
                 dateRequestList.append([self.rowUrl,params])
+
         elif type(locate) is str and type(date) is list:
             self.fileName = '/dateList.csv'
             dateRequestList = []
             for i in date:
                 params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':i}
-                dateRequestList.append([self.detchUrl,params])
+                dateRequestList.append([self.detchUrl,params])          
                 dateRequestList.append([self.rowUrl,params])
+
         elif type(date) is list and type(date) is list:
             dateRequestList = []
             self.fileName = '/multiList.csv'
@@ -59,7 +61,9 @@ class getData:
                     params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':j}
                     dateRequestList.append([self.detchUrl,params])
                     dateRequestList.append([self.rowUrl,params])
+        
         else:
+            self.fileName = '/roomList.csv'
             dateRequestList = []
             params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
             dateRequestList.append([self.detchUrl,params])
@@ -77,6 +81,8 @@ class getData:
         self.dictToList(item,date,locate)
     
     def dataCheck(self,data):
+        if data == None:
+            return None
         xmlData = xmltodict.parse(data)
 
         header = xmlData['response']['header']
@@ -95,6 +101,7 @@ class getData:
                 print("[-]해당 하는 데이터가 없음")
                 print("------------------------------------")
                 return None
+        
         if resultCode != '00':
             resultMsg = header['resultMsg']
             print("[-]API 요청 에러 발생 resultCode : " + resultCode)
@@ -156,7 +163,7 @@ class getData:
                     count += 1
                     if count < 3:
                         continue
-                    if i[4] == '0':
+                    if i[5] == '0':
                         charter.append(i)
                     else:
                         monthly.append(i)    
@@ -168,7 +175,8 @@ class getData:
     
     def checkFile(self,date=nowDate,locate=sejong):
         count = 0
-
+        checkDate = ""
+        checkLocal = ""
         if os.path.isfile(fpath + self.fileName):
             with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 checkData = []
@@ -181,9 +189,9 @@ class getData:
             checkLocal = "".join(checkData[1])
             file.close()
 
-            if(checkDate != date or checkLocal != locate):
-                os.remove(fpath + self.fileName)
-                self.getApi(date,locate)
+        if(checkDate != date or checkLocal != locate):
+            os.remove(fpath + self.fileName)
+            self.getApi(date,locate)
         else:
             self.getApi(date,locate)
 
@@ -218,11 +226,14 @@ class getData:
     #         os.remove(fpath + '/dateList.csv')
     #     if os.path.isfile(fpath + '/locateList.csv'):
     #         os.remove(fpath + '/locateList.csv')
-
+    #     if os.path.isfile(fpath + '/multiList.csv'):
+    #         os.remove(fpath + '/multiList.csv')
 
 if __name__ == '__main__':
     test = getData()
-    date = ['202201','202202','202203','202204','202205']
+    date = ['202112','202201','202202','202203','202204','202205']
     locate = ['36110','11110']
     roomList = test.roomList(date,locate)
+    roomList2 = test.roomList('202112','36110')
     print(len(roomList))
+    print(len(roomList2))
