@@ -1,4 +1,5 @@
 from package import getData
+# from getData import getData
 from datetime import datetime
 import time
 
@@ -18,7 +19,7 @@ class heap:
     def __init__(self):
         self.input = 0
         self.endPoint = 0
-        self.heap = [[0]*5 for _ in range(10001)]
+        self.heap = [[0]*7 for _ in range(10001)]
         
 
     def insertHeap(self, input,index):
@@ -49,7 +50,7 @@ class heap:
         if self.endPoint == 0:
             return None
         
-        while root * 2 + 1 < 10001 and value > self.heap[root*2] or value > self.heap[root* 2 + 1]:
+        while root * 2 + 1 < 10001 and value[index] > self.heap[root*2][index] or value[index] > self.heap[root* 2 + 1][index]:
             if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
@@ -126,15 +127,15 @@ class suggest:
         start = time.perf_counter()
         monthlyHeap = heap()
         charterHeap = heap()
-        monthly = monthlyHeap.minHeap(self.monthly,3)
-        charter = charterHeap.minHeap(self.monthly,4)
+        monthly = monthlyHeap.minHeap(self.monthly,5)
+        charter = charterHeap.minHeap(self.monthly,6)
         end = time.perf_counter() - start
         return monthly, charter, round(end, 3)
 
     def suggestCharter(self):
         start = time.perf_counter()
         minHeap = heap()
-        charter = minHeap.minHeap(self.charter,4)
+        charter = minHeap.minHeap(self.charter,6)
         end = time.perf_counter() - start
         return charter, round(end, 3)
 
