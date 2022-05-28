@@ -34,6 +34,8 @@ class getData:
         except requests.exceptions.ConnectionError:
             print("[-]연결 에러")
             return None
+        except requests.exceptions:
+            print("[-]요청 에러")
 
     def getApi(self, date=nowDate,locate=sejong):
 
@@ -69,14 +71,17 @@ class getData:
             dateRequestList.append([self.detchUrl,params])
             dateRequestList.append([self.rowUrl,params])
 
-
         responseList = []
         with ThreadPoolExecutor(max_workers=10) as pool:
             responseList = list(pool.map(self.getUrl,dateRequestList))
         
         item = []
         for i in responseList:
-            item += self.dataCheck(i)
+            check = self.dataCheck(i)
+            if check == None:
+                return None
+            else:
+                item += check
         
         self.dictToList(item,date,locate)
     
@@ -91,7 +96,7 @@ class getData:
 
         items = None
         try:
-            items = xmlData['response']['body']['items']
+            items = xmlData['response']['body']['items']['item']
 
         except:
 
@@ -109,7 +114,7 @@ class getData:
             print("[-]"+resultMsg)
             print("------------------------------------")
             return None 
-        return items['item']
+        return items
 
     def dictToList(self,item,date,locate):
         if item == None:
@@ -123,7 +128,7 @@ class getData:
             tmp.append(item[i]['연립다세대'] if item[i].__contains__('연립다세대') else "단독/다가구")
             tmp.append(item[i]['계약면적'] if item[i].__contains__('계약면적') else item[i]['전용면적'])
             tmp.append(item[i].get('층','0'))
-            tmp.append(item[i]['월세금액'])
+            tmp.append(item[i]['월세금액'].replace(",",""))
             tmp.append(item[i]['보증금액'].replace(",",""))
             tmp.append(item[i].get('건축년도','0000'))
             data.append(tmp)
@@ -174,6 +179,18 @@ class getData:
             return None
     
     def checkFile(self,date=nowDate,locate=sejong):
+        if type(locate) is list and type(date) is str:
+            self.fileName = '/locateList.csv'
+
+        elif type(locate) is str and type(date) is list:
+            self.fileName = '/dateList.csv'
+
+        elif type(date) is list and type(date) is list:
+
+            self.fileName = '/multiList.csv'
+        
+        else:
+            self.fileName = '/roomList.csv'
         count = 0
         checkDate = ""
         checkLocal = ""
@@ -188,12 +205,17 @@ class getData:
             checkDate = "".join(checkData[0])
             checkLocal = "".join(checkData[1])
             file.close()
+        dateStr = ''.join(map(str, date))
+        locateStr = ''.join(map(str, locate))
+        if(checkDate != dateStr or checkLocal != locateStr):
+            try:
+                os.remove(fpath + self.fileName)
+            except:
+                pass
 
-        if(checkDate != date or checkLocal != locate):
-            os.remove(fpath + self.fileName)
             self.getApi(date,locate)
         else:
-            self.getApi(date,locate)
+            return None
 
 
 
@@ -234,6 +256,4 @@ if __name__ == '__main__':
     date = ['202112','202201','202202','202203','202204','202205']
     locate = ['36110','11110']
     roomList = test.roomList(date,locate)
-    roomList2 = test.roomList('202112','36110')
     print(len(roomList))
-    print(len(roomList2))
