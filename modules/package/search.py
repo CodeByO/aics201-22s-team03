@@ -1,8 +1,8 @@
-# from package import getData
 from package import getData
+#from getData import getData
 from datetime import datetime
 import time
-
+import copy
 #[Function] 자료구조를 이용한 검색 기능
 #[DESC] 병합 정렬을 이용하여 정렬 후 입력 받은 값에 맞는 데이터 리턴
 #[TODO] 정렬이 겹치므로 다른 정렬 고민
@@ -27,7 +27,7 @@ class merge:
     def merge(self, list1, list2, index):
         merged = []
         while len(list1) > 0 and len(list2) > 0:
-            if int(list1[0][index]) <= int(list2[0][index]):
+            if list1[0][index] <= list2[0][index]:
                 merged.append(list1.pop(0))
             else:
                 merged.append(list2.pop(0))
@@ -69,69 +69,112 @@ class merge:
         for n in merged:
             list[l] = n	
             l +=1
-
 class search:
 
     def __init__(self,date=nowDate,locate=sejong):
         data = getData.getData()
+        #data = getData()
         self.roomList = data.roomList(date,locate)
-    def rangeSearch(self, index, max, min):
+        self.filterList = self.giveFilter()
+    def rangeSearch(self, index, max, min, wordList):
         start = time.perf_counter()
+        
         if(min > max):
             return
         result = []
-        sort = merge()
-        sortList = sort.mergeSort(self.roomList,index)
-        for i in sortList:
-            if int(min) <= int(i[index]) and int(max) >= int(i[index]):
-                result.append(i)
-            if int(max) < int(i[index]):
-                break
+        locate = wordList[0] if wordList[0] != '0' else None
+        court = wordList[1] if wordList[1] != '0' else None
+        division = wordList[2] if wordList[2] != '0' else None
+        filteredList = copy.deepcopy(self.roomList)
+        if locate != None:
+            filteredList = [x for x in filteredList if locate == x[0]]
+        if court != None:
+            filteredList = [x for x in filteredList if court == x[1]]
+        if division != None:
+            filteredList = [x for x in filteredList if division == x[2]]
+        try:
+            if index > 2 and len(filteredList) > 0:
+                sort = merge()
+                sortList = sort.mergeSort(filteredList,index)
+                for i in sortList:
+                    if int(min) <= int(i[index]) and int(max) >= int(i[index]):
+                        result.append(i)
+                    if int(max) < int(i[index]):
+                        break
+            else:
+                result = filteredList
+        except:
+            return None, None
         end = time.perf_counter() - start
-        return result, end
+        return result, round(end, 3)
     
-    def matchSearch(self, index, value):
+    def matchSearch(self, index, value, wordList):
         start = time.perf_counter()
         result = []
-        sort = merge()
-        sortList = sort.mergeSort(self.roomList,index)
-        for i in sortList:
-            if int(value) == int(i[index]):
-                result.append(i)
-            if int(value) < int(i[index]):
-                break
+        locate = wordList[0] if wordList[0] != '0' else None
+        court = wordList[1] if wordList[1] != '0' else None
+        division = wordList[2] if wordList[2] != '0' else None
+        filteredList = copy.deepcopy(self.roomList)
+        if locate != None:
+            filteredList = [x for x in filteredList if locate == x[0]]
+        if court != None:
+            filteredList = [x for x in filteredList if court == x[1]]
+        if division != None:
+            filteredList = [x for x in filteredList if division == x[2]]
+        
+        try:
+            if index > 2 and len(filteredList) > 0:
+                sort = merge()
+                sortList = sort.mergeSort(filteredList,index)
+                for i in sortList:
+                    if value == i[index]:
+                        result.append(i)
+                    if value < i[index]:
+                        break
+            else:
+                result = filteredList
+        except:
+            return None, None
         end = time.perf_counter() - start
-        return result, end
+        return result, round(end, 3)
 
-    def binarySearch(self, sorted, index, target, left, right):
-        fined = []
-        middle_idx = (left+right) // 2
-        middle = sorted[middle_idx]
-        print(middle)
-        if int(target) == int(middle[index]):
-            fined.append(middle)
-        elif int(middle[index]) > int(target):
-            self.binarySearch(sorted, index, target, left, middle_idx-1)
-        elif int(middle[index]) < int(target):
-            self.binarySearch(sorted, index, target, middle_idx+1, right)
-        else: 
-            return False
+    def giveFilter(self):
 
-        return fined
+        locateList = []
+        courtList = []
+        divisionList = []
 
+        locateList.append(self.roomList[0][0])
+        courtList.append(self.roomList[0][1])
+        divisionList.append(self.roomList[0][2])
+
+        for i in self.roomList:
+            if i[0] not in locateList:
+                locateList.append(i[0])
+            if i[1] not in courtList:
+                courtList.append(i[1])
+            if i[2] not in divisionList:
+                divisionList.append(i[2]) 
+        self.bubble(locateList)
+        self.bubble(courtList)
+        self.bubble(divisionList)
+        
+        filterList = [locateList, courtList, divisionList]
+        
+        return filterList
+
+    def bubble(self,roomList):
+        for i in range(len(roomList) - 1, 0, -1):
+            for j in range(i):
+                if roomList[j] > roomList[j+1]:
+                    roomList[j], roomList[j + 1] = roomList[j + 1], roomList[j]
 if __name__ == '__main__':
-    test = search('202203')
-    result = test.rangeSearch(5,2006,1977)
-    result2 = test.matchSearch(5,2004)
-    for i in result:
+    date = '202112'
+    locate = ['36110','11110','27110']
+    test = search(date,locate)
+    filterList = test.giveFilter()
+    for i in filterList:
         print(i)
-    print("--------------------------------------------------------------------")
-    for i in result2:
-        print(i)
-
-    bts = test.binarySearch(3,10,0)
-    print(bts)
-
     # data = getData()
     # roomList = data.roomList('202203')
     # se = search('202203')
