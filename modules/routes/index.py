@@ -12,10 +12,11 @@ blueprint = Blueprint("index", __name__, url_prefix='/')
 
 data = getData.getData()
 
-
+date = ['202112','202201','202202','202203','202204','202205']
+locate = ['36110','11110']
 
 @blueprint.route('/')
 def index():
-    roomList = data.roomList('202203')
+    roomList = data.roomList(date,locate)
     return render_template('index.html',roomList=roomList)
             

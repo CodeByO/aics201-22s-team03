@@ -6,12 +6,14 @@ from package import search
 
 blueprint = Blueprint("search", __name__, url_prefix='/search')
 
-module = search.search('202203')
+date = ['202112','202201','202202','202203','202204','202205']
+locate = ['36110','11110']
+
+module = search.search(date,locate)
 @blueprint.route('/')
 def searchIndex():
         return render_template('search.html')
-page1 = "range"
-page2 = "match"
+
 @blueprint.route('/rangeSearch',methods=['GET'])
 def rangeSearch():
 
@@ -23,16 +25,17 @@ def rangeSearch():
         max = request.args.get('max')
         min = request.args.get('min')
         roomList = None
+        time = None
         if(index != None and max != None and min != None):
-                if(int(index) > 5):
+                if(int(index) > 7):
                         roomList = None
-                        return render_template('search.html',page=page,rangeResult = roomList)
+                        return render_template('search.html',page=page,rangeResult = roomList, time = time)
                 else:
                         index = int(index)
                 roomList, time = module.rangeSearch(index, max, min)
 
         # roomList = module.rangeSearch(5,2006,1977)
-        return render_template('search.html',page=page,rangeResult = roomList)
+        return render_template('search.html',page=page,rangeResult = roomList, time = time)
 
 
 @blueprint.route('/matchSearch', methods=['POST','GET'])
@@ -41,15 +44,16 @@ def matchSearch():
         index = request.args.get('index')
         value = request.args.get('value')
         roomList = None
+        time = None
         if(index != None and value != None):
 
-                if(int(index) > 5 ):
+                if(int(index) > 7 ):
                         roomList = None
-                        return render_template('search.html',page=page,matchResult = roomList)
+                        return render_template('search.html',page=page,matchResult = roomList, time = time)
                 else:
                         index = int(index)
 
                 roomList, time = module.matchSearch(index,value)
 
                 # roomList = module.matchSearch(5,2004)
-        return render_template('search.html',page=page,matchResult = roomList)
+        return render_template('search.html',page=page,matchResult = roomList, time = time)

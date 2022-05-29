@@ -9,6 +9,9 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 
 
+date = ['202112','202201','202202','202203','202204','202205']
+locate = ['36110','11110']
+s = sort.sort(date,locate)
 blueprint = Blueprint("sort", __name__, url_prefix='/sort')
 
 @blueprint.route('/')
@@ -18,7 +21,7 @@ def index():
 @blueprint.route('/area/<int:sortId>')
 def area(sortId):
     page = "area"
-    s = sort.sort()
+    
     sorted, time = s.area(sortId)
     return render_template('sort.html',roomList=sorted, time=time ,page=page)
 

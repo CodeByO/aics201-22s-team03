@@ -11,7 +11,9 @@ from package import suggest
 
 
 blueprint = Blueprint("suggest", __name__, url_prefix='/suggest')
-sug = suggest.suggest()
+date = ['202112','202201','202202','202203','202204','202205']
+locate = ['36110','11110']
+sug = suggest.suggest(date,locate)
 @blueprint.route('/')
 def index():
         return render_template('suggest.html')
