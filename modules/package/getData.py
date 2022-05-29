@@ -133,13 +133,20 @@ class getData:
             tmp.append(item[i].get('건축년도','0000'))
             data.append(tmp)
 
-        with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(date)
-            writer.writerow(locate)
-            writer.writerows(data)
-            file.close()
-
+        if os.path.isfile(fpath+self.fileName):
+            with open(fpath + self.fileName, 'a', encoding='utf-8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(date)
+                writer.writerow(locate)
+                writer.writerows(data)
+                file.close()
+        else:
+            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(date)
+                writer.writerow(locate)
+                writer.writerows(data)
+                file.close()
 
 
     def findLocal(self,target):
@@ -171,7 +178,8 @@ class getData:
                     if i[5] == '0':
                         charter.append(i)
                     else:
-                        monthly.append(i)    
+                        if i[6] != '0':
+                            monthly.append(i)    
                 file.close()
             return monthly, charter
         except Exception as error:

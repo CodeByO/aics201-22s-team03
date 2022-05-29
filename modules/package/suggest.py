@@ -1,8 +1,8 @@
 from package import getData
-# from getData import getData
+#from getData import getData
 from datetime import datetime
 import time
-
+import traceback
 
 
 #[Function] 자료구조를 이용한 추천 기능
@@ -19,7 +19,7 @@ class heap:
     def __init__(self):
         self.input = 0
         self.endPoint = 0
-        self.heap = [[0]*7 for _ in range(10001)]
+        self.heap = [[0]*7 for _ in range(100001)]
         
 
     def insertHeap(self, input,index):
@@ -49,15 +49,13 @@ class heap:
 
         if self.endPoint == 0:
             return None
-        
         while root * 2 + 1 < 10001 and value[index] > self.heap[root*2][index] or value[index] > self.heap[root* 2 + 1][index]:
             if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
             else:
                 self.heap[root] = self.heap[root*2]
-                root = root * 2
-        
+                root = root * 2        
 
         self.heap[root] = value
 
@@ -126,8 +124,8 @@ class suggest:
     def suggestMonthly(self):
         start = time.perf_counter()
         monthlyHeap = heap()
-        charterHeap = heap()
         monthly = monthlyHeap.minHeap(self.monthly,5)
+        charterHeap = heap()
         charter = charterHeap.minHeap(self.monthly,6)
         end = time.perf_counter() - start
         return monthly, charter, round(end, 3)
@@ -139,13 +137,32 @@ class suggest:
         end = time.perf_counter() - start
         return charter, round(end, 3)
 
-# if __name__ == '__main__':
-#     data = getData()
-#     monthly, charter = data.devideRoom('202203')
-#     minheap = MinHeap()
-#     monthlyHeap = heap()
-#     monthlySort = monthlyHeap.minHeap(monthly,3)
-#     print(monthlySort)
-#     minheap.insert(monthly,3)
-#     print(minheap.heap[1])
+if __name__ == '__main__':
+    # data = getData()
+    # monthly, charter = data.devideRoom('202203')
+    # for i in monthly:
+    #     print(i[6])
+    # minheap = MinHeap()
+    # monthlyHeap = heap()
+    # monthlySort = monthlyHeap.minHeap(monthly,5)
+    # charterHeap = heap()
+    # charterSort = charterHeap.minHeap(monthly,6)
+    # print(monthlySort)
+    # print(charterSort)
+    date = ['202201','202202','202203','202204','202205']
+    locate = ['36110']
+    data = getData()
+    monthly, charter = data.devideRoom(date,locate)
+    with open('./test.csv', 'w', encoding='utf-8', newline='') as file:
+            for i in monthly:
+                file.write(i[6])
+                file.write("\n")
+            
+    charter = heap()
+    roomList = charter.minHeap(monthly,6)
+    print(roomList)
+
     
+    for i in monthly:
+        if int(i[6]) < int(roomList[6]):
+            print(i[6])
