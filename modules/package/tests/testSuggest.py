@@ -1,4 +1,3 @@
-from tokenize import Double
 import unittest
 import sys
 import os
@@ -19,6 +18,7 @@ from suggest import *
 
 3. 전세 추천의 반환 값이 맞는 데이터가 나오는지 
 
+4. 여러번 정렬 후 최고 시간, 최저 시간, 평균 시간 구하기
 '''
 
 class suggestTest(unittest.TestCase):
