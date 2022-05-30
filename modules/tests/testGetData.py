@@ -5,7 +5,7 @@ from datetime import datetime
 import csv
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from getData import getData
+from package.getData import getData
 import asyncio
 #[Function] getData.py 테스트 파일
 #[DESC] getData.py의 각 중요한 메소드 테스트
@@ -73,7 +73,7 @@ class getDataTest(unittest.TestCase):
 
         roomList = self.data.roomList(date,locate)
 
-        self.assertNotEqual(self.roomList[0],roomList[0]) 
+        self.assertEqual(self.roomList[0],roomList[0]) 
 
 
     # def testDown(self):

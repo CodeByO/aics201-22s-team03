@@ -3,8 +3,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-from suggest import *
+from package import suggest
 
 #[Function] suggest.py 테스트 파일
 #[DESC] suggest.py의 중요한 메서드 테스트
@@ -23,8 +22,8 @@ from suggest import *
 
 class suggestTest(unittest.TestCase):
     def setUp(self):
-        self.heap = heap()
-        self.suggest = suggest()
+        self.heap = suggest.heap()
+        self.suggest = suggest.suggest()
 
     def test_heap(self):
 
@@ -48,7 +47,29 @@ class suggestTest(unittest.TestCase):
         charter,time = self.suggest.suggestCharter()
         self.assertIsInstance(charter, list)
         self.assertIsInstance(time, float)
-
-
+    
+    def test_time(self):
+        monthlyTimeList = []
+        charterTimeList = []
+        for i in range(0,500,1):
+            monthly,charter,monthlyTime = self.suggest.suggestMonthly()
+            monthlyTimeList.append(monthlyTime)
+            charter, charterTime = self.suggest.suggestCharter()
+            charterTimeList.append(charterTime)
+        
+        monthlyLen = len(monthlyTimeList)
+        charterLen = len(charterTimeList)
+        monthlyTimeList.sort()
+        charterTimeList.sort()
+        print("")
+        print("최솟값")
+        print(monthlyTimeList[0])
+        print(charterTimeList[0])
+        print("평균값")
+        print(sum(monthlyTimeList,0.0)/monthlyLen)
+        print(sum(charterTimeList,0.0)/charterLen)
+        print("최댓값")
+        print(monthlyTimeList[monthlyLen-1])
+        print(charterTimeList[charterLen-1])        
 if __name__ == '__main__':
     unittest.main()
