@@ -29,25 +29,11 @@ def area(sortId):
 @blueprint.route('/charter/<int:sortId>')
 def charter(sortId):
     page = "charter"
-    if sortId == 1:
-        pass
-    elif sortId == 2:
-        pass
-    elif sortId == 3:
-        pass
-    else:
-        pass
-    return render_template('sort.html')
+    sorted, time = s.charter(sortId)
+    return render_template('sort.html',roomList=sorted, time=time ,page=page)
 
 @blueprint.route('/monthly/<int:sortId>')
 def monthly(sortId):
     page = "monthly"
-    if sortId == 1:
-        pass
-    elif sortId == 2:
-        pass
-    elif sortId == 3:
-        pass
-    else:
-        pass
-    return render_template('sort.html')
+    sorted, time = s.monthly(sortId)
+    return render_template('sort.html',roomList=sorted, time=time ,page=page)

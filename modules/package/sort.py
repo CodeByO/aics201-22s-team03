@@ -11,18 +11,18 @@ import copy
 nowDate = datetime.today().strftime("%Y%m")
 sejong = '36110'
 
-class areaSort:
-    def insertSort(self,roomList):
+class TreeSort:
+    def insertSort(self,roomList,index):
         data = copy.deepcopy(roomList)
         for j in range(1, len(data)):
             for i in range(j, 0, -1):
-                if float(data[i][3]) < float(data[i-1][3]):
+                if data[i][index] < data[i-1][index]:
                     data[i], data[i-1] = data[i-1], data[i]
                 else:
                     break
         return data
 
-    def mergeSort(self, roomList):
+    def mergeSort(self, roomList, index):
         data = copy.deepcopy(roomList)
         if len(data) < 2:
             return data
@@ -34,14 +34,14 @@ class areaSort:
 
         middle = len(data) // 2 # data 길이 중간 값 취함    
 
-        low = self.mergeSort(data[:middle])
-        high = self.mergeSort(data[middle:])   
+        low = self.mergeSort(data[:middle], index)
+        high = self.mergeSort(data[middle:], index)   
 
         merged = []
         h = l = 0
 
         while l < len(low) and h < len(high):
-            if float(low[l][3]) < float(high[h][3]):
+            if float(low[l][index]) < float(high[h][index]):
                 merged.append(low[l])
                 l += 1
             else:
@@ -53,7 +53,7 @@ class areaSort:
 
         return merged
 
-    def quickSort(self, roomList, first, final):
+    def quickSort(self, roomList, index, first, final):
         
         data = copy.deepcopy(roomList)
         
@@ -65,16 +65,16 @@ class areaSort:
         high = final
 
         while low <= high:
-            while low <= final and float(data[low][3]) <= float(data[pivot][3]):
+            while low <= final and float(data[low][index]) <= float(data[pivot][index]):
                 low +=1
-            while high>first and float(data[high][3]) >= float(data[pivot][3]):
+            while high>first and float(data[high][index]) >= float(data[pivot][index]):
                 high -= 1
             if low > high:
                 data[high],data[pivot] = data[pivot],data[high]
             else:
                 data[low],data[high]=data[pivot],data[low]
         
-        self.quickSort(data, first, high-1)
+        self.quickSort(data, index, first, high-1)
         
 
         return data
@@ -84,32 +84,70 @@ class sort:
     def __init__(self,date=nowDate,locate=sejong):
         data = getData.getData()
         self.roomList = data.roomList(date,locate)
-        self.monthlyList, self.charterList = data.devideRoom(date,locate)
-    def area(self,index):
-        areaS = areaSort()
+    def area(self,typeIndex):
+        index = 3
+        areaS = TreeSort()
         sorted = []
-        if index == 1:
+        if typeIndex == 1:
             start = time.perf_counter()
-            sorted = areaS.insertSort(self.roomList)
+            sorted = areaS.insertSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif index == 2:
+        elif typeIndex == 2:
             start = time.perf_counter()
-            sorted = areaS.mergeSort(self.roomList)
+            sorted = areaS.mergeSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif index == 3:
+        elif typeIndex == 3:
             start = time.perf_counter()
-            sorted = areaS.quickSort(self.roomList, 0, len(self.roomList)-1)
+            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         else:
             return
-    def deposit(self):
-        pass
+    def charter(self, typeIndex):
+        index = 6
+        areaS = TreeSort()
+        sorted = []
+        if typeIndex == 1:
+            start = time.perf_counter()
+            sorted = areaS.insertSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 2:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 3:
+            start = time.perf_counter()
+            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        else:
+            return
     
-    def monthly(self):
-        pass
+    def monthly(self, typeIndex):
+        index = 5
+        areaS = TreeSort()
+        sorted = []
+        if typeIndex == 1:
+            start = time.perf_counter()
+            sorted = areaS.insertSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 2:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 3:
+            start = time.perf_counter()
+            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        else:
+            return
 
 
 # if __name__ == '__main__':
