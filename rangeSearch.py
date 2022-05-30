@@ -22,7 +22,9 @@ i = min
 k = max
 
 def firstIndex(array, i):  #최소값이 시작하는 index 구하기
-    if array[i] == array[i - 1]:
+    if array[k] == array[0]:
+        return 0        #array에서 가장 작은 값이면 0 return
+    elif array[i] == array[i - 1]:
         while(array[i] == array[i - 1]):
             i = i - 1
         return i
