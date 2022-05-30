@@ -38,12 +38,13 @@ def getdatafromAPI(serviceKey, return_num, LAWD_CD=36110, DEAL_YMD=201512):
     for i in range(len(call_data)):
         call_data[i]["월세금액"] = int(call_data[i]["월세금액"])
         
-    call_data = sorted(call_data,key=lambda x: x["월세금액"], reverse=True)
+    #call_data = sorted(call_data,key=lambda x: x["월세금액"], reverse=True)
+    #return call_data[:return_num]
     
-    return call_data[:return_num]
+    call_data = [list(y.values()) for y in [x for x in call_data[:return_num]]]
+    return call_data
 
 if __name__ == '__main__':
-    
     #Test
     data = getdatafromAPI(SERVICE_KEY, 5)
     print(data)
