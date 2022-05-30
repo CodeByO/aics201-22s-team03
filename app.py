@@ -1,9 +1,7 @@
 from flask import Flask
 
 from modules.routes import index
-from modules.routes import area
-from modules.routes import deposit
-from modules.routes import monthly
+from modules.routes import sort
 from modules.routes import search
 from modules.routes import suggest
 
@@ -12,11 +10,7 @@ app = Flask(__name__)
 
 app.register_blueprint(index.blueprint)
 
-app.register_blueprint(area.blueprint)
-
-app.register_blueprint(deposit.blueprint)
-
-app.register_blueprint(monthly.blueprint)
+app.register_blueprint(sort.blueprint)
 
 app.register_blueprint(search.blueprint)
 
