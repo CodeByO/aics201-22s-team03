@@ -16,7 +16,7 @@ def searchIndex():
 
 @blueprint.route('/rangeSearch',methods=['GET'])
 def rangeSearch():
-        filterList = module.filterList
+        filterList = module.wordList
         # index = request.form['index']
         # max = request.form['max'] 
         # min = request.form['min']
@@ -48,7 +48,7 @@ def rangeSearch():
 
 @blueprint.route('/matchSearch', methods=['POST','GET'])
 def matchSearch():
-        filterList = module.filterList
+        filterList = module.wordList
         page = "match"
         filter = [None, '']
         wordList = [request.args.get('locateSelect'), request.args.get('courtSelect'), request.args.get('divisionSelect')]

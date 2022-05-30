@@ -75,7 +75,8 @@ class search:
         data = getData.getData()
         #data = getData()
         self.roomList = data.roomList(date,locate)
-        self.filterList = self.giveFilter()
+        self.wordList = self.giveWord()
+        
     def rangeSearch(self, index, max, min, wordList):
         start = time.perf_counter()
         
@@ -138,7 +139,7 @@ class search:
         end = time.perf_counter() - start
         return result, round(end, 3)
 
-    def giveFilter(self):
+    def giveWord(self):
 
         locateList = []
         courtList = []
