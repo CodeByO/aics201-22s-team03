@@ -94,7 +94,7 @@ class search:
         if division != None:
             filteredList = [x for x in filteredList if division == x[2]]
         try:
-            if index > 2 and len(filteredList) > 0:
+            if (2 < index <= 7) and len(filteredList) > 0:
                 sort = merge()
                 sortList = sort.mergeSort(filteredList,index)
                 for i in sortList:
@@ -124,7 +124,7 @@ class search:
             filteredList = [x for x in filteredList if division == x[2]]
         
         try:
-            if index > 2 and len(filteredList) > 0:
+            if  (2 < index <= 7) and len(filteredList) > 0:
                 sort = merge()
                 sortList = sort.mergeSort(filteredList,index)
                 for i in sortList:
