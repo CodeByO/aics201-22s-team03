@@ -63,7 +63,7 @@ class areaSort:                                                                 
         정렬 알고리즘 시간복잡도를 비교했을 경우 구현하기에는 복잡하지만 효율적인 방법이라 할 수 있다.
         """
         data = copy.deepcopy(roomList)                                                  #데이터 호출
-        if len(data) < 2:                                                               #???
+        if len(data) < 2:                                                               #만약 리스트의 길이가 2 미만이면 그냥 데이터를 리턴
             return data
         low = [[0]*5 for _ in range(500)]
         high = [[0]*5 for _ in range(500)]
@@ -87,8 +87,8 @@ class areaSort:                                                                 
                 merged.append(high[h])                                                  #만약 아니라면 high 배열의 인자를 merged 에 저장후
                 h += 1                                                                  #다음 high 배열 인자와 비교
 
-        merged += low[l:]                                                               #??
-        merged += high[h:]                                                              #??
+        merged += low[l:]                                                               #인덱스 슬라이싱, while 문을 돌리고 남은 값들을 넣어주는 코드
+        merged += high[h:]                                                              #인덱스 슬라이싱, while 문을 돌리고 남은 값들을 넣어주는 코드
 
         return merged                                                                   #정렬된 배열을 리턴
 
@@ -133,11 +133,11 @@ class areaSort:                                                                 
             while high>first and float(data[high][3]) >= float(data[pivot][3]):         #high 값이 first값보다 크고, 데이터값이 piovt 값보다 크거나 같다면
                 high -= 1                                                               #high 값을 1증가
             if low > high:                                                              #만약 low > high 일 경우
-                data[high],data[pivot] = data[pivot],data[high]                         #???
+                data[high],data[pivot] = data[pivot],data[high]                         #high -> pivot , pivot -> high 저장 (swap 과 유사)
             else:
-                data[low],data[high]=data[pivot],data[low]                              #???
+                data[low],data[high]=data[pivot],data[low]                              #low -> pivot , high -> low 저장 (swap 과 유사)
         
-        self.quickSort(data, first, high-1)                                             #????
+        self.quickSort(data, first, high-1)                                             #재귀로 리스트들이 더이상 분할이 안될때까지 반복
         
 
         return data
