@@ -11,82 +11,66 @@ import copy
 nowDate = datetime.today().strftime("%Y%m")
 sejong = '36110'
 
-class TreeSort:
+class ThreeSort:
     def insertSort(self,roomList,index):
         data = copy.deepcopy(roomList)
         for j in range(1, len(data)):
             for i in range(j, 0, -1):
-                if data[i][index] < data[i-1][index]:
+                if float(data[i][index]) < float(data[i-1][index]):
                     data[i], data[i-1] = data[i-1], data[i]
                 else:
                     break
         return data
 
     def mergeSort(self, roomList, index):
-        data = copy.deepcopy(roomList)
-        if len(data) < 2:
-            return data
-        low = [[0]*5 for _ in range(500)]
-        high = [[0]*5 for _ in range(500)]
-        
-            # 리스트 초기화
-        
+        list = copy.deepcopy(roomList)
+        size = len(list)
+        if size <= 1:
+            return list
+        mid = len(list) // 2
+        left = self.mergeSort(list[:mid],index)
+        right = self.mergeSort(list[mid:],index)
+        merged = self.merge(left,right,index)
+        return merged
 
-        middle = len(data) // 2 # data 길이 중간 값 취함    
-
-        low = self.mergeSort(data[:middle], index)
-        high = self.mergeSort(data[middle:], index)   
-
+    def merge(self, list1, list2, index):
         merged = []
-        h = l = 0
-
-        while l < len(low) and h < len(high):
-            if float(low[l][index]) < float(high[h][index]):
-                merged.append(low[l])
-                l += 1
+        while len(list1) > 0 and len(list2) > 0:
+            if float(list1[0][index]) <= float(list2[0][index]):
+                merged.append(list1.pop(0))
             else:
-                merged.append(high[h])
-                h += 1
+                merged.append(list2.pop(0))
 
-        merged += low[l:]
-        merged += high[h:]
+        if len(list1) > 0:
+            merged += list1
+        if len(list2) > 0:
+            merged += list2
 
         return merged
 
-    def quickSort(self, roomList, index, first, final):
+    def quickSort(self,roomList,index):
+        array = copy.deepcopy(roomList)
         
-        data = copy.deepcopy(roomList)
+        if len(array) <= 1:
+            return array
+    
+        pivot, tail = array[0], array[1:]
         
-        if first >= final:
-            return
+        leftSide = [x for x in tail if float(x[index]) <= float(pivot[index])]
+        rightSide = [x for x in tail if float(x[index]) > float(pivot[index])]
         
-        pivot = first
-        low = first + 1
-        high = final
-
-        while low <= high:
-            while low <= final and float(data[low][index]) <= float(data[pivot][index]):
-                low +=1
-            while high>first and float(data[high][index]) >= float(data[pivot][index]):
-                high -= 1
-            if low > high:
-                data[high],data[pivot] = data[pivot],data[high]
-            else:
-                data[low],data[high]=data[pivot],data[low]
-        
-        self.quickSort(data, index, first, high-1)
-        
-
-        return data
+        return self.quickSort(leftSide,index) + [pivot] + self.quickSort(rightSide,index)
+    
 
 class sort:
 
     def __init__(self,date=nowDate,locate=sejong):
         data = getData.getData()
         self.roomList = data.roomList(date,locate)
+        self.monthlyList, self.charterList = data.devideRoom(date,locate) 
     def area(self,typeIndex):
         index = 3
-        areaS = TreeSort()
+        areaS = ThreeSort()
         sorted = []
         if typeIndex == 1:
             start = time.perf_counter()
@@ -100,28 +84,28 @@ class sort:
             return sorted, round(end, 3)
         elif typeIndex == 3:
             start = time.perf_counter()
-            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
+            sorted = areaS.quickSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         else:
             return
     def charter(self, typeIndex):
         index = 6
-        areaS = TreeSort()
+        areaS = ThreeSort()
         sorted = []
         if typeIndex == 1:
             start = time.perf_counter()
-            sorted = areaS.insertSort(self.roomList, index)
+            sorted = areaS.insertSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         elif typeIndex == 2:
             start = time.perf_counter()
-            sorted = areaS.mergeSort(self.roomList, index)
+            sorted = areaS.mergeSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         elif typeIndex == 3:
             start = time.perf_counter()
-            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
+            sorted = areaS.quickSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         else:
@@ -129,21 +113,21 @@ class sort:
     
     def monthly(self, typeIndex):
         index = 5
-        areaS = TreeSort()
+        areaS = ThreeSort()
         sorted = []
         if typeIndex == 1:
             start = time.perf_counter()
-            sorted = areaS.insertSort(self.roomList, index)
+            sorted = areaS.insertSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         elif typeIndex == 2:
             start = time.perf_counter()
-            sorted = areaS.mergeSort(self.roomList, index)
+            sorted = areaS.mergeSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         elif typeIndex == 3:
             start = time.perf_counter()
-            sorted = areaS.quickSort(self.roomList, index, 0, len(self.roomList)-1)
+            sorted = areaS.quickSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
         else:
