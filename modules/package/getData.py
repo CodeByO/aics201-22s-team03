@@ -36,6 +36,7 @@ class getData:
             return None
         except requests.exceptions:
             print("[-]요청 에러")
+            return None
 
     def getApi(self, date=nowDate,locate=sejong):
 
@@ -77,7 +78,7 @@ class getData:
         
         item = []
         for i in responseList:
-            check = self.dataCheck(i)
+            check = self.checkData(i)
             if check == None:
                 return None
             else:
@@ -85,7 +86,7 @@ class getData:
         
         self.dictToList(item,date,locate)
     
-    def dataCheck(self,data):
+    def checkData(self,data):
         if data == None:
             return None
         xmlData = xmltodict.parse(data)
@@ -106,6 +107,7 @@ class getData:
                 print("[-]해당 하는 데이터가 없음")
                 print("------------------------------------")
                 return None
+                
         
         if resultCode != '00':
             resultMsg = header['resultMsg']
@@ -113,7 +115,7 @@ class getData:
             print("------------------------------------")
             print("[-]"+resultMsg)
             print("------------------------------------")
-            return None 
+            return None
         return items
 
     def dictToList(self,item,date,locate):
@@ -158,6 +160,24 @@ class getData:
                 return None
                 
         return match[0][0]
+
+    def roomList(self,date=nowDate,locate=sejong):
+        self.checkFile(date,locate)
+        count = 0
+        try:
+            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
+                roomList = []
+                for i in csv.reader(file):
+                    count += 1
+                    if count < 3:
+                        continue
+                    roomList.append(i)
+                file.close()
+                return roomList
+                
+        except Exception as error:
+            print("[-]" + self.fileName + " 파일 처리 에러 발생",error)
+            return None
 
 
     def devideRoom(self,date=nowDate,locate=sejong):
@@ -216,36 +236,10 @@ class getData:
         dateStr = ''.join(map(str, date))
         locateStr = ''.join(map(str, locate))
         if(checkDate != dateStr or checkLocal != locateStr):
-            try:
-                os.remove(fpath + self.fileName)
-            except:
-                pass
-
             self.getApi(date,locate)
         else:
             return None
 
-
-
-    def roomList(self,date=nowDate,locate=sejong):
-        self.checkFile(date,locate)
-        count = 0
-        try:
-            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
-                roomList = []
-                for i in csv.reader(file):
-                    count += 1
-                    if count < 3:
-                        continue
-                    roomList.append(i)
-                file.close()
-                return roomList
-                
-        except Exception as error:
-            print("[-]" + self.fileName + " 파일 처리 에러 발생",error)
-            return None
-
-                   
 
 
     # def __del__(self):
