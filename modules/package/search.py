@@ -14,7 +14,8 @@ sejong = '36110'
 
 class merge:
 
-    def mergeSort(self, list, index):
+    def mergeSort(self, roomList, index):
+        list = copy.deepcopy(roomList)
         size = len(list)
         if size <= 1:
             return list
@@ -27,7 +28,7 @@ class merge:
     def merge(self, list1, list2, index):
         merged = []
         while len(list1) > 0 and len(list2) > 0:
-            if list1[0][index] <= list2[0][index]:
+            if float(list1[0][index]) <= float(list2[0][index]):
                 merged.append(list1.pop(0))
             else:
                 merged.append(list2.pop(0))
@@ -39,36 +40,7 @@ class merge:
 
         return merged
 
-    def mergeSort2(self, list, index, p, q):
-        if p>=q:
-            return
-        mid  = (p + q) // 2
-        self.mergeSort2(list, index, p, mid)
-        self.mergeSort2(list, index, mid + 1, q)
-        self.merge2(list, index, p, mid + 1, q)
 
-
-    def merge2(self, list, index, left, right, end):
-        merged = []
-        l, r = left, right
-        while l < right and r <= end:
-            if int(list[l][index]) <= int(list[r][index]):
-                merged.append(list[l])
-                l +=1
-            else:
-                merged.append(list[r])
-                r +=1
-        while l < right:
-            merged.append(list[l])
-            l +=1
-        while r <= end:
-            merged.append(list[r])
-            r+=1
-
-        l = left
-        for n in merged:
-            list[l] = n	
-            l +=1
 class search:
 
     def __init__(self,date=nowDate,locate=sejong):
@@ -173,7 +145,7 @@ if __name__ == '__main__':
     date = '202112'
     locate = ['36110','11110','27110']
     test = search(date,locate)
-    filterList = test.giveFilter()
+    filterList = test.giveWord()
     for i in filterList:
         print(i)
     # data = getData()
