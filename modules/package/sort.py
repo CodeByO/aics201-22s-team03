@@ -68,68 +68,120 @@ class sort:
         data = getData.getData()
         self.roomList = data.roomList(date,locate)
         self.monthlyList, self.charterList = data.devideRoom(date,locate) 
-    def area(self,typeIndex):
+    def area(self,typeIndex, listType):
         index = 3
         areaS = ThreeSort()
         sorted = []
-        if typeIndex == 1:
+        if typeIndex == 1 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.insertSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 2:
+        elif typeIndex == 2 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.mergeSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 3:
+        elif typeIndex == 3 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.quickSort(self.roomList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
+        elif typeIndex == 1 and listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.insertSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
+        elif typeIndex == 2 and listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
+        elif typeIndex == 3 and listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.quickSort(self.roomList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
         else:
             return
-    def charter(self, typeIndex):
+    def charter(self, typeIndex, listType):
         index = 6
         areaS = ThreeSort()
         sorted = []
-        if typeIndex == 1:
+        if typeIndex == 1 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.insertSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 2:
+        elif typeIndex == 2 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.mergeSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 3:
+        elif typeIndex == 3 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.quickSort(self.charterList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
+        elif listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.charterList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
         else:
             return
     
-    def monthly(self, typeIndex):
+    def monthly(self, typeIndex, listType):
         index = 5
         areaS = ThreeSort()
         sorted = []
-        if typeIndex == 1:
+        if typeIndex == 1 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.insertSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 2:
+        elif typeIndex == 2 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.mergeSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
-        elif typeIndex == 3:
+        elif typeIndex == 3 and listType == 0:
             start = time.perf_counter()
             sorted = areaS.quickSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return sorted, round(end, 3)
+        elif listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.monthlyList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
+
+        else:
+            return
+    def construction(self, typeIndex, listType):
+        index = 7
+        areaS = ThreeSort()
+        sorted = []
+        if typeIndex == 1 and listType == 0:
+            start = time.perf_counter()
+            sorted = areaS.insertSort(self.monthlyList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 2 and listType == 0:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.monthlyList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif typeIndex == 3 and listType == 0:
+            start = time.perf_counter()
+            sorted = areaS.quickSort(self.monthlyList, index)
+            end = time.perf_counter() - start
+            return sorted, round(end, 3)
+        elif listType == 1:
+            start = time.perf_counter()
+            sorted = areaS.mergeSort(self.monthlyList, index)
+            end = time.perf_counter() - start
+            return reversed(sorted), round(end, 3)
         else:
             return
 

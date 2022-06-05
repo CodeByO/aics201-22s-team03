@@ -18,22 +18,28 @@ blueprint = Blueprint("sort", __name__, url_prefix='/sort')
 def index():
         return render_template('sort.html')
 
-@blueprint.route('/area/<int:sortId>')
-def area(sortId):
+@blueprint.route('/area/<int:sortId>/<int:listId>')
+def area(sortId,listId):
     page = "area"
     
-    sorted, time = s.area(sortId)
+    sorted, time = s.area(sortId,listId)
     return render_template('sort.html',roomList=sorted, time=time ,page=page)
 
 
-@blueprint.route('/charter/<int:sortId>')
-def charter(sortId):
+@blueprint.route('/charter/<int:sortId>/<int:listId>')
+def charter(sortId,listId):
     page = "charter"
-    sorted, time = s.charter(sortId)
+    sorted, time = s.charter(sortId,listId)
     return render_template('sort.html',roomList=sorted, time=time ,page=page)
 
-@blueprint.route('/monthly/<int:sortId>')
-def monthly(sortId):
+@blueprint.route('/monthly/<int:sortId>/<int:listId>')
+def monthly(sortId,listId):
     page = "monthly"
-    sorted, time = s.monthly(sortId)
+    sorted, time = s.monthly(sortId,listId)
+    return render_template('sort.html',roomList=sorted, time=time ,page=page)
+
+@blueprint.route('/construction/<int:sortId>/<int:listId>')
+def construction(sortId,listId):
+    page = "construction"
+    sorted, time = s.construction(sortId,listId)
     return render_template('sort.html',roomList=sorted, time=time ,page=page)

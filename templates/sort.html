@@ -29,7 +29,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/sort/area/1">정렬</a>
+            <a class="nav-link active" href="/sort/area/1/0">정렬</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/suggest/charter">추천</a>
@@ -52,24 +52,35 @@
       {% if page == "area" %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" href="/sort/area/1">면적</a>
+          <a class="nav-link active" href="/sort/area/1/0">면적</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/sort/charter/1">전세</a>
+          <a class="nav-link" aria-current="page" href="/sort/charter/1/0">전세</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/sort/monthly/1">월세</a>
+          <a class="nav-link" aria-current="page" href="/sort/monthly/1/0">월세</a>
         </li>
-        
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/construction/1/0">건축년도</a>
+        </li>
 
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           정렬 방식
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/sort/area/1">삽입</a>
-          <a class="dropdown-item" href="/sort/area/2">병합</a>
-          <a class="dropdown-item" href="/sort/area/3">퀵</a>
+          <a class="dropdown-item" href="/sort/area/1/0">삽입</a>
+          <a class="dropdown-item" href="/sort/area/2/0">병합</a>
+          <a class="dropdown-item" href="/sort/area/3/0">퀵</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          순서
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/area/1/0">오름차순</a>
+          <a class="dropdown-item" href="/sort/area/2/1">내림차순</a>
         </div>
       </div>
       {% if time%}
@@ -79,24 +90,35 @@
       {% if page == "monthly" %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link " href="/sort/area/1">면적</a>
+          <a class="nav-link " href="/sort/area/1/0">면적</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/sort/charter/1">전세</a>
+          <a class="nav-link" aria-current="page" href="/sort/charter/1/0">전세</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/sort/monthly/1">월세</a>
+          <a class="nav-link active" aria-current="page" href="/sort/monthly/1/0">월세</a>
         </li>
-        
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/construction/1/0">건축년도</a>
+        </li>
 
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           정렬 방식
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/sort/monthly/1">삽입</a>
-          <a class="dropdown-item" href="/sort/monthly/2">병합</a>
-          <a class="dropdown-item" href="/sort/monthly/3">퀵</a>
+          <a class="dropdown-item" href="/sort/monthly/1/0">삽입</a>
+          <a class="dropdown-item" href="/sort/monthly/2/0">병합</a>
+          <a class="dropdown-item" href="/sort/monthly/3/0">퀵</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          순서
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/monthly/2/0">오름차순</a>
+          <a class="dropdown-item" href="/sort/monthly/2/1">내림차순</a>
         </div>
       </div>
       {% if time%}
@@ -106,13 +128,16 @@
       {% if page == "charter" %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" href="/sort/area/1">면적</a>
+          <a class="nav-link" href="/sort/area/1/0">면적</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/sort/charter/1">전세</a>
+          <a class="nav-link active" aria-current="page" href="/sort/charter/1/0">전세</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/sort/monthly/1">월세</a>
+          <a class="nav-link" aria-current="page" href="/sort/monthly/1/0">월세</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/construction/1/0">건축년도</a>
         </li>
 
       <div class="dropdown">
@@ -120,15 +145,62 @@
           정렬 방식
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="/sort/charter/1">삽입</a>
-          <a class="dropdown-item" href="/sort/charter/2">병합</a>
-          <a class="dropdown-item" href="/sort/charter/3">퀵</a>
+          <a class="dropdown-item" href="/sort/charter/1/0">삽입</a>
+          <a class="dropdown-item" href="/sort/charter/2/0">병합</a>
+          <a class="dropdown-item" href="/sort/charter/3/0">퀵</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          순서
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/charter/2/1">오름차순</a>
+          <a class="dropdown-item" href="/sort/charter/2/1">내림차순</a>
         </div>
       </div>
       {% if time%}
           <div id="time" >작업 시간 : {{time}} 초</div>
         {% endif %}
       {% endif %}
+    {% if page == "construction" %}
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="/sort/area/1/0">면적</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/charter/1/0">전세</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/sort/monthly/1/0">월세</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/sort/construction/1/0">건축년도</a>
+        </li>
+
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          정렬 방식
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/construction/1/0">삽입</a>
+          <a class="dropdown-item" href="/sort/construction/2/0">병합</a>
+          <a class="dropdown-item" href="/sort/construction/3/0">퀵</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          순서
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/sort/construction/2/0">오름차순</a>
+          <a class="dropdown-item" href="/sort/construction/2/1">내림차순</a>
+        </div>
+      </div>
+      {% if time%}
+          <div id="time" >작업 시간 : {{time}} 초</div>
+      {% endif %}
+    {% endif %}
     {% if roomList%}
     <table class="table table-bordered">
       <thead>
