@@ -4,7 +4,7 @@ import os
 import random
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from package import search
+from roominpy import search
 #[Function] search.py 테스트 파일
 #[DESC] search.py의 각 중요한 메소드 테스트
 #[TODO] 테스트 목록 작성 및 코드 작성
@@ -63,15 +63,30 @@ class searchTest(unittest.TestCase):
         rangeTimeList.sort()
         matchTimeList.sort()
         print("")
+        print("----------------------------------------------------------------------")
         print("최솟값")
-        print(rangeTimeList[0])
-        print(matchTimeList[0])
+        print("")
+        print("범위 탐색")
+        print(str(rangeTimeList[0]) + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(matchTimeList[0]) + " 초")
+        print("----------------------------------------------------------------------")
         print("평균값")
-        print(sum(rangeTimeList,0.0)/rangeLen)
-        print(sum(matchTimeList,0.0)/matchLen)
+        print("")
+        print("범위 탐색")
+        print(str(sum(rangeTimeList,0.0)/rangeLen)  + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(sum(matchTimeList,0.0)/matchLen)  + " 초")
+        print("----------------------------------------------------------------------")
         print("최댓값")
-        print(rangeTimeList[rangeLen-1])
-        print(matchTimeList[matchLen-1]) 
+        print("")
+        print("범위 탐색")
+        print(str(rangeTimeList[rangeLen-1])  + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(matchTimeList[matchLen-1])  + " 초") 
 
 if __name__ == '__main__':
     unittest.main()

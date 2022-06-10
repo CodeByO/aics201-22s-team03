@@ -3,7 +3,7 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from package import suggest
+from roominpy import suggest
 
 #[Function] suggest.py 테스트 파일
 #[DESC] suggest.py의 중요한 메서드 테스트
@@ -51,7 +51,7 @@ class suggestTest(unittest.TestCase):
     def test_time(self):
         monthlyTimeList = []
         charterTimeList = []
-        for i in range(0,500,1):
+        for i in range(0,50,1):
             monthly,charter,monthlyTime = self.suggest.suggestMonthly()
             monthlyTimeList.append(monthlyTime)
             charter, charterTime = self.suggest.suggestCharter()
@@ -61,15 +61,31 @@ class suggestTest(unittest.TestCase):
         charterLen = len(charterTimeList)
         monthlyTimeList.sort()
         charterTimeList.sort()
+
         print("")
+        print("----------------------------------------------------------------------")
         print("최솟값")
-        print(monthlyTimeList[0])
-        print(charterTimeList[0])
+        print("")
+        print("범위 탐색")
+        print(str(monthlyTimeList[0]) + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(charterTimeList[0]) + " 초")
+        print("----------------------------------------------------------------------")
         print("평균값")
-        print(sum(monthlyTimeList,0.0)/monthlyLen)
-        print(sum(charterTimeList,0.0)/charterLen)
+        print("")
+        print("범위 탐색")
+        print(str(sum(monthlyTimeList,0.0)/monthlyLen)  + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(sum(charterTimeList,0.0)/charterLen)  + " 초")
+        print("----------------------------------------------------------------------")
         print("최댓값")
-        print(monthlyTimeList[monthlyLen-1])
-        print(charterTimeList[charterLen-1])        
+        print("")
+        print("범위 탐색")
+        print(str(monthlyTimeList[monthlyLen-1])  + " 초")
+        print("")
+        print("매칭 탐색")
+        print(str(charterTimeList[charterLen-1])  + " 초")      
 if __name__ == '__main__':
     unittest.main()

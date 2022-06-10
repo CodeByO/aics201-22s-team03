@@ -5,7 +5,7 @@ from datetime import datetime
 import csv
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from package.getData import getData
+from roominpy.getData import getData
 import asyncio
 #[Function] getData.py 테스트 파일
 #[DESC] getData.py의 각 중요한 메소드 테스트
@@ -24,7 +24,8 @@ import asyncio
 4. 기존에 작성한 에러 처리가 제대로 동작 하는지
 
 '''
-
+def message():
+    raise Exception("[-]API 요청 에러 발생")
 
 class getDataTest(unittest.TestCase):
 
@@ -38,9 +39,26 @@ class getDataTest(unittest.TestCase):
         self.monthly,self.charter = self.data.devideRoom(nowDate,local)
     
 
-    def test_file(self):
+    def test_roomListFile(self):
        self.assertTrue(os.path.isfile('../roomList.csv'))
-        
+    
+    def test_locateListFile(self):
+        date = datetime.today().strftime("%Y%m")
+        locate = ['36110','11110']
+        roomList = self.data.roomList(date,locate)
+        self.assertTrue(os.path.isfile('../locateList.csv'))
+
+    def test_dateListFile(self):
+        date = ['202201','202202']
+        locate = '36110'
+        roomList = self.data.roomList(date,locate)
+        self.assertTrue(os.path.isfile('../dateList.csv'))
+    
+    def test_dateListFile(self):
+        date = ['202201','202202']
+        locate = ['36110','11110']
+        roomList = self.data.roomList(date,locate)
+        self.assertTrue(os.path.isfile('../multiList.csv'))
 
     def test_list(self):
         self.assertIsInstance(self.roomList, list)
@@ -56,15 +74,6 @@ class getDataTest(unittest.TestCase):
             self.assertEqual(len(i),8)
         for i in self.charter:
             self.assertEqual(len(i), 8)
-    
-    def test_getApiError(self):
-        pass
-
-    # def test_checkFile(self):
-    #     date = '202204'
-    #     locate = '11110'
-    #     roomList = self.data.roomList(date, locate)
-    #     print(roomList[0])
 
 
     def test_checkFile(self):
