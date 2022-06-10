@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 import sys,os
-from package import sort
+from roominpy import sort
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 #[Function] 추천 요청

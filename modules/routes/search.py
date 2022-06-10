@@ -1,5 +1,5 @@
 from flask import Blueprint,request, render_template
-from package import search
+from roominpy import search
 #[Function] 검색 요청
 #[DESC] 클라이언트로 받은 검색 요청 처리
 #[TODO] 기능 작성
