@@ -1,4 +1,4 @@
-from roominpy import getData
+from roominpy.getData import getData
 #from getData import getData
 from datetime import datetime
 import time
@@ -70,55 +70,9 @@ class heap:
             if i[index] != 0:
                 return i         
 
-class MinHeap:
-    
-    def __init__(self):
-        self.heap = [0]
-        self.current_size = 0
- 
-    def swim(self, i, index):
-        while i // 2 > 0:
-            if self.heap[i][index] < self.heap[i // 2][index]:
-                self.heap[i], self.heap[i // 2] = self.heap[i // 2], self.heap[i]
-            i = i // 2
- 
-    def insert(self, k, index):
-        self.heap = k
-        self.current_size += 1
-        self.swim(self.current_size, index)
-
-    def min_child(self, i, index):
-        if (i * 2)+1 > self.current_size:
-            return i * 2
-        else:
-            if self.heap[i*2][index] < self.heap[(i*2)+1][index]:
-                return i * 2
-            else:
-                return (i * 2) + 1        
-        
-    def sink(self, i, index):
-        while (i * 2) <= self.current_size:
-            mc = self.min_child(i, index)
-            if self.heap[i][index] > self.heap[mc][index]:
-                self.heap[i], self.heap[mc] = self.heap[mc], self.heap[i]
-            i = mc
- 
-    def delete_min(self,index):
-        if len(self.heap) == 1:
-            return None
-
-        root = self.heap[1]
-        self.heap[1] = self.heap[self.current_size]
-        *self.heap, _ = self.heap
-        self.current_size -= 1
-        self.sink(1,index)
-        return root
-
-
-
 class suggest:
     def __init__(self,date=nowDate,locate=sejong):
-        data = getData.getData()
+        data = getData()
         self.monthly, self.charter = data.devideRoom(date,locate)
 
     def suggestMonthly(self):
