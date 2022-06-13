@@ -1,0 +1,46 @@
+roominpy.sort - 정렬 모듈
+자취방 계약면적, 월세, 보증금 등의 옵션을 오름차순으로 정리해주는 모듈입니다.
+정렬의 종류로는 삽입 정렬, 합병 정렬, 퀵 정렬이 있습니다.
+
+소스 코드 : roominpy/sort.py
+
+클래스 roominpy.sort.ThreeSort
+
+roominpy.sort.ThreeSort.insertSort(roomlist, index)
+ - 인자로는 roomlist (2차원 리스트)와 index(0=계약면적, 1=월세, 2= 보증금)를 받아와 삽입 정렬 수행
+ - roomlist를 원본의 영향을 주지 않기 위해 깊은 복사하여 data에 저장
+ - 정렬된 data를 반환
+
+roominpy.sort.ThreeSort.mergeSort(roomlist, index)
+- 인자로는 roomlist (2차원 리스트)와 index(0=계약면적, 1=월세, 2= 보증금)를 받아와 합병 정렬 수행
+- roomlist를 원본의 영향을 주지 않기 위해 깊은 복사하여 data에 저장
+- 새로운 리스트를 만들어 그 곳에 합병 정렬 한 뒤 그 리스트를 반환
+
+roominpy.sort.ThreeSort.quickSort(roomlist, index)
+- 인자로는 roomlist (2차원 리스트)와 index(0=계약면적, 1=월세, 2= 보증금)를 받아와 합병 정렬 수행
+- roomlist를 원본의 영향을 주지 않기 위해 깊은 복사하여 data에 저장
+- pivot을 기준으로 왼쪽과 오른쪽을 각각 정렬한 값을 반환
+
+클래스 roominpy.sort.sort:
+초기값(date='현재날짜',locate='세종시')
+- 객체를 할당할 때 받은 인자를 roominpy.getData.getData.roomList()을 호출하여 반환된 데이터 저장
+- date는 '년월'로 구성되어 있는 날짜 정보이며 문자열 또는 리스트로 줄 수 있음
+- locate는 지역코드 정보이며 문자열 또는 리스트로 줄 수 있음
+
+roominpy.sort.sort.area(typeIndex, listType)
+- 인자로 typeIndex(1=삽입 정렬, 2=합병정렬, 3=퀵정렬) listType(0=올림차순,1=내림차순)을 받는다.
+- 입력받는 인자에 따라 반환값이 무슨 정렬인지, 오름차순인지 내림차순인지 달라진다.
+- time모듈을 import하여 각 정렬을 수행하는데 걸리는 시간을 측
+-받은 인자가 없으면 그냥 return
+
+roominpy.sort.sort.charter(typeIndex, listType)
+- 인자로 typeIndex(1=삽입 정렬, 2=합병정렬, 3=퀵정렬) listType(0=올림차순,1=내림차순)을 받는다.
+- 입력받는 인자에 따라 반환값이 무슨 정렬인지, 오름차순인지 내림차순인지 달라진다.
+- time모듈을 import하여 각 정렬을 수행하는데 걸리는 시간을 측
+-받은 인자가 없으면 그냥 return
+
+roominpy.sort.sort.monthly(typeIndex, listType)
+- 인자로 typeIndex(1=삽입 정렬, 2=합병정렬, 3=퀵정렬) listType(0=올림차순,1=내림차순)을 받는다.
+- 입력받는 인자에 따라 반환값이 무슨 정렬인지, 오름차순인지 내림차순인지 달라진다.
+- time모듈을 import하여 각 정렬을 수행하는데 걸리는 시간을 측
+-받은 인자가 없으면 그냥 return
