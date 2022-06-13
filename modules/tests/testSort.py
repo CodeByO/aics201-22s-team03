@@ -43,47 +43,62 @@ class sortTest(unittest.TestCase):
         test = [[1,3,4,5,6,7],[1,2,3,4,5,6],[1,5,6,7,8,9],[1,7,8,9,10,11],[1,8,9,10,11,12],[1,9,10,11,12,13]]
         qSorted = self.t.quickSort(test,2)
         self.assertEqual(qSorted[0],sorted[0])
-    # def test_time(self):
-    #     monthlyTimeList = []
-    #     charterTimeList = []
-    #     for i in range(0,50,1):
-    #         monthly,charter,monthlyTime = self.suggest.suggestMonthly()
-    #         monthlyTimeList.append(monthlyTime)
-    #         charter, charterTime = self.suggest.suggestCharter()
-    #         charterTimeList.append(charterTime)
+
+    def test_time(self):
+        mergeTimeList = []
+        insertTimeList = []
+        quickTimeList = []
+
+        for i in range(0,50,1):
+            insertList, insertTime = self.s.area(1,0)
+            mergeList, mergeTime = self.s.area(2,0)
+            quickList, quickTime = self.s.area(3,0)
+
+            insertTimeList.append(insertTime)
+            mergeTimeList.append(mergeTime)
+            quickTimeList.append(quickTime)
         
-    #     monthlyLen = len(monthlyTimeList)
-    #     charterLen = len(charterTimeList)
-    #     monthlyTimeList.sort()
-    #     charterTimeList.sort()
+        insertTimeList.sort()
+        mergeTimeList.sort()
+        quickTimeList.sort()
 
-    #     print("")
-    #     print("----------------------------------------------------------------------")
-    #     print("최솟값")
-    #     print("")
-    #     print("범위 탐색")
-    #     print(str(monthlyTimeList[0]) + " 초")
-    #     print("")
-    #     print("매칭 탐색")
-    #     print(str(charterTimeList[0]) + " 초")
-    #     print("----------------------------------------------------------------------")
-    #     print("평균값")
-    #     print("")
-    #     print("범위 탐색")
-    #     print(str(sum(monthlyTimeList,0.0)/monthlyLen)  + " 초")
-    #     print("")
-    #     print("매칭 탐색")
-    #     print(str(sum(charterTimeList,0.0)/charterLen)  + " 초")
-    #     print("----------------------------------------------------------------------")
-    #     print("최댓값")
-    #     print("")
-    #     print("범위 탐색")
-    #     print(str(monthlyTimeList[monthlyLen-1])  + " 초")
-    #     print("")
-    #     print("매칭 탐색")
-    #     print(str(charterTimeList[charterLen-1])  + " 초")    
-
-
+        insertLen = len(insertTimeList)
+        mergeLen = len(mergeTimeList)
+        quickLen = len(quickTimeList)
+        print("")
+        print("----------------------------------------------------------------------")
+        print("최솟값")
+        print("")
+        print("삽입 정렬")
+        print(str(insertTimeList[0]) + " 초")
+        print("")
+        print("합병 정렬")
+        print(str(mergeTimeList[0]) + " 초")
+        print("")
+        print("퀵 정렬")
+        print(str(quickTimeList[0]) + " 초")
+        print("----------------------------------------------------------------------")
+        print("평균값")
+        print("")
+        print("삽입 정렬")
+        print(str(round(sum(insertTimeList,0.0)/insertLen,3))  + " 초")
+        print("")
+        print("합병 정렬")
+        print(str(round(sum(mergeTimeList,0.0)/mergeLen,3)) + " 초")
+        print("")
+        print("퀵 정렬")
+        print(str(round(sum(quickTimeList,0.0)/quickLen,3))  + " 초")
+        print("----------------------------------------------------------------------")
+        print("최댓값")
+        print("")
+        print("삽입 정렬")
+        print(str(insertTimeList[insertLen-1])  + " 초")
+        print("")
+        print("합병 정렬")
+        print(str(mergeTimeList[mergeLen-1])  + " 초")
+        print("")
+        print("퀵 정렬")
+        print(str(quickTimeList[quickLen-1])  + " 초") 
 
 if __name__ == '__main__':
     unittest.main()

@@ -22,8 +22,10 @@ from roominpy import suggest
 
 class suggestTest(unittest.TestCase):
     def setUp(self):
+        date = ['202112','202201','202202','202203','202204','202205']
+        locate = ['36110','11110']
         self.heap = suggest.heap()
-        self.suggest = suggest.suggest()
+        self.suggest = suggest.suggest(date,locate)
 
     def test_heap(self):
 
@@ -66,26 +68,26 @@ class suggestTest(unittest.TestCase):
         print("----------------------------------------------------------------------")
         print("최솟값")
         print("")
-        print("범위 탐색")
+        print("월세 추천")
         print(str(monthlyTimeList[0]) + " 초")
         print("")
-        print("매칭 탐색")
+        print("전세 추천")
         print(str(charterTimeList[0]) + " 초")
         print("----------------------------------------------------------------------")
         print("평균값")
         print("")
-        print("범위 탐색")
-        print(str(sum(monthlyTimeList,0.0)/monthlyLen)  + " 초")
+        print("월세 추천")
+        print(str(round(sum(monthlyTimeList,0.0)/monthlyLen,3))  + " 초")
         print("")
-        print("매칭 탐색")
-        print(str(sum(charterTimeList,0.0)/charterLen)  + " 초")
+        print("전세 추천")
+        print(str(round(sum(charterTimeList,0.0)/charterLen,3))  + " 초")
         print("----------------------------------------------------------------------")
         print("최댓값")
         print("")
-        print("범위 탐색")
+        print("월세 추천")
         print(str(monthlyTimeList[monthlyLen-1])  + " 초")
         print("")
-        print("매칭 탐색")
+        print("전세 추천")
         print(str(charterTimeList[charterLen-1])  + " 초")      
 if __name__ == '__main__':
     unittest.main()
