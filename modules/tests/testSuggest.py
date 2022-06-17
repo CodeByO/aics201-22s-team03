@@ -26,6 +26,7 @@ class suggestTest(unittest.TestCase):
         locate = ['36110','11110']
         self.heap = suggest.heap()
         self.suggest = suggest.suggest(date,locate)
+        self.monthly, self.charter = self.suggest.monthly, self.suggest.charter
 
     def test_heap(self):
 
@@ -45,10 +46,17 @@ class suggestTest(unittest.TestCase):
         self.assertIsInstance(charter, list)
         self.assertIsInstance(time, float)
 
+        for i in self.monthly:
+            self.assertLessEqual(int(monthly[5]),int(i[5]))
+            self.assertLessEqual(int(charter[6]),int(i[6]))
+
     def test_charterSuggest(self):
         charter,time = self.suggest.suggestCharter()
         self.assertIsInstance(charter, list)
         self.assertIsInstance(time, float)
+
+        for i in self.charter:
+            self.assertLessEqual(int(charter[6]), int(i[6]))
     
     def test_time(self):
         monthlyTimeList = []
