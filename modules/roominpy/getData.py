@@ -12,9 +12,7 @@ load_dotenv(verbose=True)
 fpath = os.path.dirname(os.path.abspath(__file__))
 
 #[Function] Open API 데이터 호출
-#[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회
-#[TODO] 여러 날짜 및 지역을 저장하는 코드 작성
-#[ISSUE] locateList와 dateList 메서드 실행시 어떤 방식으로 여러개 데이터를 요청해서 저장할지 고민 중 
+#[DESC] 지역코드와 날짜를 인자로 받아 Open API의 데이터 조회 후 리스트 화 하여 파일로 저장
 
 class getData:
     
