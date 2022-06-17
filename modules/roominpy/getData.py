@@ -245,6 +245,3 @@ class getData:
     #     if os.path.isfile(fpath + '/multiList.csv'):
     #         os.remove(fpath + '/multiList.csv')
     #         os.remove(fpath + '/multiList.csv.check')
-
-if __name__ == '__main__':  
-    print("test")
