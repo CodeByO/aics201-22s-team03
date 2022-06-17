@@ -5,8 +5,6 @@ import time
 import copy
 #[Function] 자료구조를 이용한 검색 기능
 #[DESC] 병합 정렬을 이용하여 정렬 후 입력 받은 값에 맞는 데이터 리턴
-#[TODO] 정렬이 겹치므로 다른 정렬 고민
-#[ISSUE] 한글은 검색을 어떻게 할지 고민
 
 nowDate = datetime.today().strftime("%Y%m")
 sejong = '36110'
@@ -128,30 +126,35 @@ class search:
                 courtList.append(i[1])
             if i[2] not in divisionList:
                 divisionList.append(i[2])
-        self.bubble(locateList)
-        self.bubble(courtList)
-        self.bubble(divisionList)
+        locateList = self.mergeSort(locateList)
+        courtList = self.mergeSort(courtList)
+        divisionList = self.mergeSort(divisionList)
         
         filterList = [locateList, courtList, divisionList]
         
         return filterList
 
-    def bubble(self,list):
-        for i in range(len(list) - 1, 0, -1):
-            for j in range(i):
-                if list[j] > list[j+1]:
-                    list[j], list[j + 1] = list[j + 1], list[j]
-if __name__ == '__main__':
-    date = '202112'
-    locate = ['36110','11110','27110']
-    test = search(date,locate)
-    filterList = test.giveWord()
-    for i in filterList:
-        print(i)
-    # data = getData()
-    # roomList = data.roomList('202203')
-    # se = search('202203')
-    # me = merge()
-    # me.mergeSort2(roomList,5,0,len(roomList)-1)
-    # bts = se.binarySearch(roomList,5,'1977',0,len(roomList)-1)
-    # print(bts)
+    def mergeSort(self, dataList):
+        size = len(dataList)
+        if size <= 1:
+            return dataList
+        mid = len(dataList) // 2
+        left = self.mergeSort(dataList[:mid])
+        right = self.mergeSort(dataList[mid:])
+        merged = self.merge(left,right)
+        return merged
+
+    def merge(self, list1, list2):
+        merged = []
+        while len(list1) > 0 and len(list2) > 0:
+            if list1[0] <= list2[0]:
+                merged.append(list1.pop(0))
+            else:
+                merged.append(list2.pop(0))
+
+        if len(list1) > 0:
+            merged += list1
+        if len(list2) > 0:
+            merged += list2
+
+        return merged
