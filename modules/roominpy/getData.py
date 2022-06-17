@@ -138,18 +138,18 @@ class getData:
         if os.path.isfile(fpath+self.fileName):
             with open(fpath + self.fileName, 'a', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(date)
-                writer.writerow(locate)
                 writer.writerows(data)
                 file.close()
         else:
             with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(date)
-                writer.writerow(locate)
                 writer.writerows(data)
                 file.close()
-
+        with open(fpath + self.fileName + ".check","w",encoding='utf-8', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(date)
+                writer.writerow(locate)
+                file.close
 
     def findLocal(self,target):
         with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
@@ -163,14 +163,10 @@ class getData:
 
     def roomList(self,date=nowDate,locate=sejong):
         self.checkFile(date,locate)
-        count = 0
         try:
             with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 roomList = []
                 for i in csv.reader(file):
-                    count += 1
-                    if count < 3:
-                        continue
                     roomList.append(i)
                 file.close()
                 return roomList
@@ -182,7 +178,6 @@ class getData:
 
     def devideRoom(self,date=nowDate,locate=sejong):
         self.checkFile(date,locate)
-        count = 0
         try:
             with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
                 
@@ -192,9 +187,6 @@ class getData:
                 charter = []
 
                 for i in roomList:
-                    count += 1
-                    if count < 3:
-                        continue
                     if i[5] == '0':
                         charter.append(i)
                     else:
@@ -219,17 +211,15 @@ class getData:
         
         else:
             self.fileName = '/roomList.csv'
-        count = 0
+
         checkDate = ""
         checkLocal = ""
-        if os.path.isfile(fpath + self.fileName):
-            with open(fpath + self.fileName,'r',encoding='UTF-8') as file:
-                checkData = []
+        checkData = []
+    
+        if os.path.isfile(fpath + self.fileName) and os.path.isfile(fpath + self.fileName + ".check"):
+            with open(fpath + self.fileName + ".check","r",encoding='utf-8', newline='') as file:
                 for i in csv.reader(file):
                     checkData.append(i)
-                    count += 1
-                    if count == 2:
-                        break
             checkDate = "".join(checkData[0])
             checkLocal = "".join(checkData[1])
             file.close()
@@ -246,16 +236,17 @@ class getData:
 
     #     if os.path.isfile(fpath + '/roomList.csv'):
     #         os.remove(fpath + '/roomList.csv')
+    #         os.remove(fpath + '/roomList.csv.check')
     #     if os.path.isfile(fpath + '/dateList.csv'):
     #         os.remove(fpath + '/dateList.csv')
+    #         os.remove(fpath + '/dateList.csv.check')
+
     #     if os.path.isfile(fpath + '/locateList.csv'):
     #         os.remove(fpath + '/locateList.csv')
+    #         os.remove(fpath + '/locateList.csv.check')
     #     if os.path.isfile(fpath + '/multiList.csv'):
     #         os.remove(fpath + '/multiList.csv')
+    #         os.remove(fpath + '/multiList.csv.check')
 
-if __name__ == '__main__':
-    test = getData()
-    date = ['202112','202201','202202','202203','202204','202205']
-    locate = ['36110','11110']
-    roomList = test.roomList(date,locate)
-    print(len(roomList))
+if __name__ == '__main__':  
+    print("test")
