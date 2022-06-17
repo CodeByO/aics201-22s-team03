@@ -29,7 +29,7 @@ class heap:
 
         while cur > 0:
 
-            if float(self.heap[cur // 2][index]) > float(input[index]):
+            if int(self.heap[cur // 2][index]) > int(input[index]):
 
                 self.heap[cur] = self.heap[cur // 2]
                 cur = cur // 2
@@ -49,7 +49,7 @@ class heap:
 
         if self.endPoint == 0:
             return None
-        while root * 2 + 1 < 10001 and float(value[index]) > float(self.heap[root*2][index]) or float(value[index]) > float(self.heap[root* 2 + 1][index]):
+        while root * 2 + 1 < 10001 and int(value[index]) > int(self.heap[root*2][index]) or int(value[index]) > int(self.heap[root* 2 + 1][index]):
             if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
