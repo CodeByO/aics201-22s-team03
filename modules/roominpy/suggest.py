@@ -29,7 +29,7 @@ class heap:
 
         while cur > 0:
 
-            if int(self.heap[cur // 2][index]) > int(input[index]):
+            if float(self.heap[cur // 2][index]) > float(input[index]):
 
                 self.heap[cur] = self.heap[cur // 2]
                 cur = cur // 2
@@ -49,7 +49,7 @@ class heap:
 
         if self.endPoint == 0:
             return None
-        while root * 2 + 1 < 10001 and value[index] > self.heap[root*2][index] or value[index] > self.heap[root* 2 + 1][index]:
+        while root * 2 + 1 < 10001 and float(value[index]) > float(self.heap[root*2][index]) or float(value[index]) > float(self.heap[root* 2 + 1][index]):
             if self.heap[root * 2][index] > self.heap[root * 2 + 1][index]:
                 self.heap[root] = self.heap[root * 2 + 1]
                 root = root * 2 + 1
@@ -90,33 +90,3 @@ class suggest:
         charter = minHeap.minHeap(self.charter,6)
         end = time.perf_counter() - start
         return charter, round(end, 3)
-
-if __name__ == '__main__':
-    # data = getData()
-    # monthly, charter = data.devideRoom('202203')
-    # for i in monthly:
-    #     print(i[6])
-    # minheap = MinHeap()
-    # monthlyHeap = heap()
-    # monthlySort = monthlyHeap.minHeap(monthly,5)
-    # charterHeap = heap()
-    # charterSort = charterHeap.minHeap(monthly,6)
-    # print(monthlySort)
-    # print(charterSort)
-    date = ['202201','202202','202203','202204','202205']
-    locate = ['36110']
-    data = getData()
-    monthly, charter = data.devideRoom(date,locate)
-    with open('./test.csv', 'w', encoding='utf-8', newline='') as file:
-            for i in monthly:
-                file.write(i[6])
-                file.write("\n")
-            
-    charter = heap()
-    roomList = charter.minHeap(monthly,6)
-    print(roomList)
-
-    
-    for i in monthly:
-        if int(i[6]) < int(roomList[6]):
-            print(i[6])
