@@ -6,7 +6,6 @@ import copy
 
 #[Function] 자료구조를 이용한 각 요소 정렬
 #[DESC] 면적, 월세, 전세 각 분야를 3가지 정렬로 각각 정렬
-#[TODO] 면적 정렬 추가 후 데이터와 수행 시간 측정은 어디서 넣어줄건지 고민
 
 nowDate = datetime.today().strftime("%Y%m")
 sejong = '36110'
@@ -103,7 +102,8 @@ class sort:
             end = time.perf_counter() - start
             return reversed(sorted), round(end, 3)
         else:
-            return
+            return None
+
     def charter(self, typeIndex, listType):
         index = 6
         areaS = ThreeSort()
@@ -129,7 +129,7 @@ class sort:
             end = time.perf_counter() - start
             return reversed(sorted), round(end, 3)
         else:
-            return
+            return None
     
     def monthly(self, typeIndex, listType):
         index = 5
@@ -155,9 +155,9 @@ class sort:
             sorted = areaS.mergeSort(self.monthlyList, index)
             end = time.perf_counter() - start
             return reversed(sorted), round(end, 3)
-
         else:
-            return
+            return None
+
     def construction(self, typeIndex, listType):
         index = 7
         areaS = ThreeSort()
@@ -183,25 +183,4 @@ class sort:
             end = time.perf_counter() - start
             return reversed(sorted), round(end, 3)
         else:
-            return
-
-
-# if __name__ == '__main__':
-#     s = sort()
-#     data = getData.getData()
-#     roomList = data.roomList()
-#     newd=s.mergeSort(roomList, 2)
-#     quickList =  s.quickSort(roomList, 0, len(roomList)-1)
-#     insertList = s.insertSort(roomList, 2)
-
-#     # print('----------------mergeSort-------------------')
-
-#     # for i in newd:
-#     #     print(i[2])
-    
-#     print('----------------quickSort-------------------')
-
-#     for i in insertList:
-#         print(i[2])
-
-    
+            return None
