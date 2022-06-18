@@ -82,7 +82,7 @@ class getData:
             else:
                 item += check
         
-        self.dictToList(item,date,locate)
+        self.dicToList(item,date,locate)
     
     def checkData(self,data):
         if data == None:
@@ -116,7 +116,7 @@ class getData:
             return None
         return items
 
-    def dictToList(self,item,date,locate):
+    def dicToList(self,item,date,locate):
         if item == None:
             return None
         data = []
@@ -133,16 +133,10 @@ class getData:
             tmp.append(item[i].get('건축년도','0000'))
             data.append(tmp)
 
-        if os.path.isfile(fpath+self.fileName):
-            with open(fpath + self.fileName, 'a', encoding='utf-8', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerows(data)
-                file.close()
-        else:
-            with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerows(data)
-                file.close()
+        with open(fpath + self.fileName, 'w', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+            file.close()
         with open(fpath + self.fileName + ".check","w",encoding='utf-8', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(date)
