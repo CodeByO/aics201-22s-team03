@@ -37,28 +37,31 @@ class getDataTest(unittest.TestCase):
         self.data.getApi(nowDate,local)
         self.roomList = self.data.roomList(nowDate,local)
         self.monthly,self.charter = self.data.devideRoom(nowDate,local)
-    
 
     def test_roomListFile(self):
-       self.assertTrue(os.path.isfile('../roomList.csv'))
+       self.assertTrue(os.path.isfile('../roominpy/roomList.csv'))
+       self.assertTrue(os.path.isfile('../roominpy/roomList.csv.check'))
     
     def test_locateListFile(self):
         date = datetime.today().strftime("%Y%m")
         locate = ['36110','11110']
         roomList = self.data.roomList(date,locate)
-        self.assertTrue(os.path.isfile('../locateList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/locateList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/locateList.csv.check'))
 
     def test_dateListFile(self):
         date = ['202201','202202']
         locate = '36110'
         roomList = self.data.roomList(date,locate)
-        self.assertTrue(os.path.isfile('../dateList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/dateList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/dateList.csv.check'))
     
     def test_dateListFile(self):
         date = ['202201','202202']
         locate = ['36110','11110']
         roomList = self.data.roomList(date,locate)
-        self.assertTrue(os.path.isfile('../multiList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/multiList.csv'))
+        self.assertTrue(os.path.isfile('../roominpy/multiList.csv.check'))
 
     def test_list(self):
         self.assertIsInstance(self.roomList, list)
@@ -77,22 +80,38 @@ class getDataTest(unittest.TestCase):
 
 
     def test_checkFile(self):
-        date = '202104'
+        date = '202205'
         locate = '11110'
+        beforData = []
+        if os.path.isfile('../roominpy/roomList.csv') and os.path.isfile('../roominpy/roomList.csv.check'):
+            with open("../roominpy/roomList.csv.check","r",encoding='utf-8', newline='') as file:
+                for i in csv.reader(file):
+                    beforData.append(i)
+        afterData = []
 
-        roomList = self.data.roomList(date,locate)
+        self.data.getApi(date,locate)
+        if os.path.isfile('../roominpy/roomList.csv') and os.path.isfile('../roominpy/roomList.csv.check'):
+            with open("../roominpy/roomList.csv.check","r",encoding='utf-8', newline='') as file:
+                for i in csv.reader(file):
+                    afterData.append(i)
 
-        self.assertEqual(self.roomList[0],roomList[0]) 
+        self.assertNotEqual(beforData,afterData)
 
 
-    # def testDown(self):
-    #     try:
-    #         os.remove('../roomList.csv')
-    #         print("[+] 테스트 후 파일 삭제 성공")
-    #         print("----------------------------------------------------------------------")  
-    #     except:
-    #         print("[-]파일 삭제 실패")
-    #         print("----------------------------------------------------------------------")     
+    def testDown(self):
+        if os.path.isfile('../roominpy' + '/roomList.csv'):
+            os.remove('../roominpy' + '/roomList.csv')
+            os.remove('../roominpy' + '/roomList.csv.check')
+        if os.path.isfile('../roominpy' + '/dateList.csv'):
+            os.remove('../roominpy' + '/dateList.csv')
+            os.remove('../roominpy' + '/dateList.csv.check')
+
+        if os.path.isfile('../roominpy' + '/locateList.csv'):
+            os.remove('../roominpy' + '/locateList.csv')
+            os.remove('../roominpy' + '/locateList.csv.check')
+        if os.path.isfile('../roominpy' + '/multiList.csv'):
+            os.remove('../roominpy' + '/multiList.csv')
+            os.remove('../roominpy' + '/multiList.csv.check')
 
 
 if __name__ == '__main__':
