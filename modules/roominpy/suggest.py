@@ -66,9 +66,7 @@ class heap:
             else:
                 self.insertHeap(n,index)
 
-        for i in self.heap:
-            if i[index] != 0:
-                return i         
+        return self.heap[1]
 
 class suggest:
     def __init__(self,date=nowDate,locate=sejong):
