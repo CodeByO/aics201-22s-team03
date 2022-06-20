@@ -141,7 +141,7 @@ class getData:
                 writer = csv.writer(file)
                 writer.writerow(date)
                 writer.writerow(locate)
-                file.close
+                file.close()
 
     def findLocal(self,target):
         with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
