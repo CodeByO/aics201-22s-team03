@@ -18,7 +18,7 @@ from roominpy import search
 
 3. 단어 검색 테스트 하기
 
-5. 시간 평균 구하기
+4. 여러번 정렬 후 최고 시간, 최저 시간, 평균 시간 구하기
 
 '''
 
@@ -75,10 +75,10 @@ class searchTest(unittest.TestCase):
         print("평균값")
         print("")
         print("범위 탐색")
-        print(str(sum(rangeTimeList,0.0)/rangeLen)  + " 초")
+        print(str(round(sum(rangeTimeList,0.0)/rangeLen,3))  + " 초")
         print("")
         print("매칭 탐색")
-        print(str(sum(matchTimeList,0.0)/matchLen)  + " 초")
+        print(str(round(sum(matchTimeList,0.0)/matchLen,3))  + " 초")
         print("----------------------------------------------------------------------")
         print("최댓값")
         print("")

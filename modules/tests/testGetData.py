@@ -9,8 +9,7 @@ from roominpy.getData import getData
 import asyncio
 #[Function] getData.py 테스트 파일
 #[DESC] getData.py의 각 중요한 메소드 테스트
-#[TODO] test_checkFile 메서드 완성 및 에러 테스트 완성
-#[ISSUE] test_checkFile에서 getAPI 메서드 호출 시 데이터를 받아오지 못함
+
 
 '''
 테스트 목록
@@ -21,7 +20,7 @@ import asyncio
 
 3. 리스트 안에 데이터가 맞게 들어갔는지
 
-4. 기존에 작성한 에러 처리가 제대로 동작 하는지
+4. 다른 인자로 요청시 파일이 맞게 변경되어 저장되는지
 
 '''
 def message():
