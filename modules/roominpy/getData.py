@@ -21,7 +21,7 @@ class getData:
         self.api_key = requests.utils.unquote(api_key)
         self.detchUrl = os.getenv('DETCH_URI')
         self.rowUrl = os.getenv('ROW_URI')
-        self.fileName = '/roomList.csv'
+        self.fileName = '/data/roomList.csv'
 
     def getUrl(self,url):
         try:
@@ -40,14 +40,14 @@ class getData:
 
         if type(locate) is list and type(date) is str:
             dateRequestList = []
-            self.fileName = '/locateList.csv'
+            self.fileName = '/data/locateList.csv'
             for i in locate:
                 params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':date}
                 dateRequestList.append([self.detchUrl,params])
                 dateRequestList.append([self.rowUrl,params])
 
         elif type(locate) is str and type(date) is list:
-            self.fileName = '/dateList.csv'
+            self.fileName = '/data/dateList.csv'
             dateRequestList = []
             for i in date:
                 params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':i}
@@ -56,7 +56,7 @@ class getData:
 
         elif type(date) is list and type(date) is list:
             dateRequestList = []
-            self.fileName = '/multiList.csv'
+            self.fileName = '/data/multiList.csv'
             for i in locate:
                 for j in date:
                     params = {'serviceKey': self.api_key, 'LAWD_CD' : i,'DEAL_YMD':j}
@@ -64,7 +64,7 @@ class getData:
                     dateRequestList.append([self.rowUrl,params])
         
         else:
-            self.fileName = '/roomList.csv'
+            self.fileName = '/data/roomList.csv'
             dateRequestList = []
             params = {'serviceKey': self.api_key, 'LAWD_CD' : locate,'DEAL_YMD':date}
             dateRequestList.append([self.detchUrl,params])
@@ -144,7 +144,7 @@ class getData:
                 file.close()
 
     def findLocal(self,target):
-        with open(fpath + '/regionCode.csv','r',encoding='UTF-8') as file:
+        with open(fpath + '/data/regionCode.csv','r',encoding='UTF-8') as file:
     
             reader = csv.reader(file)
             match = [s for s in reader if target in s] 
@@ -192,17 +192,17 @@ class getData:
     
     def checkFile(self,date=nowDate,locate=sejong):
         if type(locate) is list and type(date) is str:
-            self.fileName = '/locateList.csv'
+            self.fileName = '/data/locateList.csv'
 
         elif type(locate) is str and type(date) is list:
-            self.fileName = '/dateList.csv'
+            self.fileName = '/data/dateList.csv'
 
         elif type(date) is list and type(date) is list:
 
-            self.fileName = '/multiList.csv'
+            self.fileName = '/data/multiList.csv'
         
         else:
-            self.fileName = '/roomList.csv'
+            self.fileName = '/data/roomList.csv'
 
         checkDate = ""
         checkLocal = ""
