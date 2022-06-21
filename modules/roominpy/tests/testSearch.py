@@ -3,8 +3,8 @@ import sys
 import os
 import random
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-from roominpy import search
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
+from search import search,merge
 #[Function] search.py 테스트 파일
 #[DESC] search.py의 각 중요한 메소드 테스트
 #[TODO] 테스트 목록 작성 및 코드 작성
@@ -25,11 +25,11 @@ from roominpy import search
 
 class searchTest(unittest.TestCase):
     def setUp(self):
-        self.search = search.search('202203','36110')
+        self.search = search('202203','36110')
         self.wordList = ['0','0','0']
 
     def test_merge(self):
-        m = search.merge()
+        m = merge()
         testList = [[random.randint(0,100) for col in range(10)] for row in range(10)]
         
         mergeList = m.mergeSort(testList,3)

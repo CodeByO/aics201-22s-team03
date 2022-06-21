@@ -1,10 +1,9 @@
 import unittest
 import sys
 import os
-import random
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-
-from roominpy import sort
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
+from sort import sort,ThreeSort
 #[Function] search.py 테스트 파일
 #[DESC] search.py의 각 중요한 메소드 테스트
 #[TODO] 테스트 목록 작성 및 코드 작성
@@ -22,8 +21,8 @@ class sortTest(unittest.TestCase):
     def setUp(self):
         date = ['202112','202201','202202','202203','202204','202205']
         locate = ['36110','11110']
-        self.s = sort.sort(date,locate)
-        self.t = sort.ThreeSort()
+        self.s = sort(date,locate)
+        self.t = ThreeSort()
     def test_merge(self):
         sorted = [[1,2,3,4,5,6],[1,3,4,5,6,7],[1,4,5,6,7,8],[1,5,6,7,8,9],[1,9,10,11,12,13],[1,8,9,10,11,12]]
         test = [[1,3,4,5,6,7],[1,2,3,4,5,6],[1,7,8,9,10,11],[1,5,6,7,8,9],[1,8,9,10,11,12],[1,9,10,11,12,13]]

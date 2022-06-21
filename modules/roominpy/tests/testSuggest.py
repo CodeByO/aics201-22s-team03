@@ -1,9 +1,9 @@
 import unittest
 import sys
 import os
-
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from roominpy import suggest
+from suggest import suggest,heap
 
 #[Function] suggest.py 테스트 파일
 #[DESC] suggest.py의 중요한 메서드 테스트
@@ -24,8 +24,8 @@ class suggestTest(unittest.TestCase):
     def setUp(self):
         date = ['202112','202201','202202','202203','202204','202205']
         locate = ['36110','11110']
-        self.heap = suggest.heap()
-        self.suggest = suggest.suggest(date,locate)
+        self.heap = heap()
+        self.suggest = suggest(date,locate)
         self.monthly, self.charter = self.suggest.monthly, self.suggest.charter
 
     def test_heap(self):
